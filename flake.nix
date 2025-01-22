@@ -9,8 +9,9 @@
     let pkgs = import nixpkgs { inherit system; }; in {
       devShells.default = pkgs.mkShell {
         buildInputs = with pkgs; [
-          nodejs_20
+          nodejs_22
           nodePackages.typescript-language-server
+          (pkgs.writeShellScriptBin "run" "npm run dev")
         ];
       };
     }
