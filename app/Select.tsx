@@ -9,7 +9,7 @@ export default function Select({
 }) {
   return (
     <select
-      className="bg-slate-700 p-4 text-lg focus:outline-none focus:bg-slate-600 h-16 w-full"
+      className="bg-base text-text p-4 text-lg focus:outline-none border-2 border-text rounded-lg h-16 w-full"
       onChange={(event) => onChange?.(event.target.value)}
       autoFocus={autoClick}
     >

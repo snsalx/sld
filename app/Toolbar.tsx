@@ -20,16 +20,19 @@ export default function Toolbar({
     throw new Error("No slide selected (Toolbar.tsx)");
   }
 
+  const setName = (name: string) => updateCurrentSlide({...currentSlide, name})
+
   return (
-    <footer className="bg-slate-800 p-4 flex justify-between">
+    <footer className="bg-base p-4 flex justify-between">
       <div className="flex gap-4">
-        <div className="w-16 h-16 bg-blue-400 text-center">todo logo</div>
-        <SlideSelector
-          currentSlide={currentSlide}
-          updateCurrent={updateCurrentSlide}
-          setCurrent={setCurrentSlideId}
-          slides={slides}
+        <input
+          className="p-4 bg-transparent text-lg w-96 h-16 focus:outline-none focus:border-green border-2 border-text rounded-lg"
+          placeholder="Slide title"
+          value={currentSlide.name}
+          onChange={(event) => setName(event.target.value)}
         />
+        <IconButton action="tree" color="gray" />
+        <IconButton action="add" color="green" />
       </div>
 
       <div className="flex gap-4">
@@ -44,41 +47,3 @@ export default function Toolbar({
   );
 }
 
-function SlideSelector({
-  slides,
-  currentSlide,
-  setCurrent,
-  updateCurrent,
-}: {
-  slides: Slide[];
-  currentSlide: Slide;
-  setCurrent: (id: string) => void;
-  updateCurrent: (id: Slide) => void;
-}) {
-  const [selecting, setSelecting] = useState(false);
-  const options = Object.fromEntries(
-    slides.map((slide) => [slide.id, slide.name || slide.id]),
-  );
-
-  function setCurrentName(event: any) {
-    updateCurrent({ ...currentSlide, name: event.target.value });
-  }
-
-  return (
-    <div className="flex bg-slate-600">
-      {selecting ? (
-        <div className="w-96 h-16">
-          <Select options={options} onChange={setCurrent} autoClick />
-        </div>
-      ) : (
-        <input
-          className="p-4 bg-slate-700 text-lg w-96 h-16 focus:outline-none focus:bg-slate-600"
-          placeholder="Slide title"
-          value={currentSlide.name}
-          onChange={setCurrentName}
-        />
-      )}
-      <IconButton action="list" color="gray" onClick={() => setSelecting(!selecting)} />
-    </div>
-  );
-}
