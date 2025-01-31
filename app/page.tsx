@@ -13,8 +13,8 @@ export default function Home() {
   console.log({ slides, currentSlide });
 
   return (
-    <div className="flex flex-col h-screen text-slate-100">
-      <main className="bg-slate-900 h-full">todo canvas</main>
+    <div className="flex flex-col h-screen latte dark:mocha text-text">
+      <main className="bg-base h-full border-b-2 border-b-crust">todo canvas</main>
 
       <Toolbar
         currentSlideId={currentSlide}
