@@ -4,7 +4,7 @@ import "./globals.css";
 
 const font = JetBrains_Mono({
   variable: "--font-geist-sans",
-  subsets: ["latin", "cyrillic"],
+  subsets: ["latin", "cyrillic", "latin-ext"],
 });
 
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${font.variable} ${font.variable} antialiased`}>
+      <body className={`${font.variable} ${font.variable} antialiased`} style={{fontFamily: "JetBrains Mono"}}>
         {children}
       </body>
     </html>

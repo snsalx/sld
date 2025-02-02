@@ -8,11 +8,13 @@ export default function Toolbar({
   setCurrentSlideId,
   slides,
   updateCurrentSlide,
+  toggleTreeView,
 }: {
   currentSlideId: string;
   setCurrentSlideId: (slide: string) => void;
   slides: Slide[];
   updateCurrentSlide: (update: Slide) => void;
+  toggleTreeView: () => void;
 }) {
   const currentSlide = slides.find((slide) => slide.id === currentSlideId);
 
@@ -31,17 +33,12 @@ export default function Toolbar({
           value={currentSlide.name}
           onChange={(event) => setName(event.target.value)}
         />
-        <IconButton action="tree" color="gray" />
+        <IconButton action="tree" color="blue" onClick={toggleTreeView} />
         <IconButton action="add" color="green" />
       </div>
 
       <div className="flex gap-4">
-        <Select options={{ section: "Slide", url: "URL" }} />
-      </div>
-
-      <div className="flex gap-4 text-slate-800 font-bold">
-        <IconButton action="back" color="orange" />
-        <IconButton action="close" color="red" />
+        <Select options={{ none: "No link", section: "Slide", url: "URL" }} />
       </div>
     </footer>
   );

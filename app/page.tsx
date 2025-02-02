@@ -10,11 +10,15 @@ export default function Home() {
   const [slides, setSlides] = useState([initialSlide]);
   const [currentSlide, setCurrentSlide] = useState(initialSlide.id);
 
-  console.log({ slides, currentSlide });
+  const [showTree, setShowTree] = useState(false);
 
   return (
     <div className="flex flex-col h-screen latte dark:mocha text-text">
-      <main className="bg-base h-full border-b-2 border-b-crust">todo canvas</main>
+      {showTree ? (
+        <main className="bg-base h-full border-b-2 border-b-crust">Tree</main>
+      ) : (
+        <main className="bg-base h-full border-b-2 border-b-crust">todo canvas</main>
+      )}
 
       <Toolbar
         currentSlideId={currentSlide}
@@ -25,6 +29,7 @@ export default function Home() {
 
           setSlides([...rest, update]);
         }}
+        toggleTreeView={() => setShowTree(!showTree)}
       />
     </div>
   );

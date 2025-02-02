@@ -18,7 +18,7 @@ const colors = {
   red: "red",
   green: "green",
   orange: "peach",
-  gray: "text",
+  blue: "blue",
 };
 
 type Actions = keyof typeof icons;
@@ -37,7 +37,7 @@ export default function IconButton({
 
   return (
     <button
-      className={`w-16 h-16 text-${colors[color]} bg-transparent hover:scale-95 transition border-2 border-${colors[color]} flex justify-center items-center rounded-lg`}
+      className={`w-16 h-16 text-base bg-${colors[color]} hover:scale-95 transition flex justify-center items-center rounded-lg`}
       onClick={onClick}
     >
       <Icon className="size-8" />
