@@ -30,10 +30,10 @@ export type SlideObject =
     };
 
 export type Geometry = {
-  left: number,
-  top: number,
-  width: number,
-  height: number,
+  left: number;
+  top: number;
+  width: number;
+  height: number;
   borderRadius?: number;
 };
 
@@ -64,19 +64,19 @@ export function createDemoSlide(): Slide {
           top: 10,
           width: 10,
           height: 5,
-        }
+        },
       },
       {
         kind: "image",
         id: crypto.randomUUID(),
         src: "https://upload.wikimedia.org/wikipedia/commons/3/30/React_Logo_SVG.svg",
-        fit: 'contain',
+        fit: "contain",
         geometry: {
           left: 40,
           top: 40,
           width: 20,
           height: 20,
-        }
+        },
       },
     ],
   };

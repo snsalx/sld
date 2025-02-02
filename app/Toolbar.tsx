@@ -22,7 +22,8 @@ export default function Toolbar({
     throw new Error("No slide selected (Toolbar.tsx)");
   }
 
-  const setName = (name: string) => updateCurrentSlide({...currentSlide, name})
+  const setName = (name: string) =>
+    updateCurrentSlide({ ...currentSlide, name });
 
   return (
     <footer className="bg-base p-4 flex justify-between">
@@ -43,4 +44,3 @@ export default function Toolbar({
     </footer>
   );
 }
-

@@ -19,7 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${font.variable} ${font.variable} antialiased`} style={{fontFamily: "JetBrains Mono"}}>
+      <body
+        className={`${font.variable} ${font.variable} antialiased`}
+        style={{ fontFamily: "JetBrains Mono" }}
+      >
         {children}
       </body>
     </html>

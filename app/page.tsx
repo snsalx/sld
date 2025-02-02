@@ -13,10 +13,10 @@ export default function Home() {
   const [slides, setSlides] = useState([initialSlide]);
   const [currentSlide, setCurrentSlide] = useState(initialSlide.id);
 
-  const objects = slides.find((slide) => slide.id === currentSlide)
+  const objects = slides.find((slide) => slide.id === currentSlide);
 
   if (!objects) {
-    return <div>Error in page: objects missing</div>
+    return <div>Error in page: objects missing</div>;
   }
 
   function updateCurrentSlide(update: Slide) {
