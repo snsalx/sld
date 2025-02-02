@@ -14,6 +14,12 @@ export default function Canvas({slide, setSlide}: {slide: Slide, setSlide: (upda
     const box = ref.current.getBoundingClientRect();
     const oldGeo = target.geometry;
 
+    const correctForMovement = Number(type === "move");
+    if (x < 0) x = 0;
+    if (x + oldGeo.width / 100 * box.width * correctForMovement > box.width) x = box.width - oldGeo.width / 100 * box.width * correctForMovement
+    if (y < 0) y = 0;
+    if (y + oldGeo.height / 100 * box.height * correctForMovement > box.height) y = box.height - oldGeo.height / 100 * box.height * correctForMovement
+
     const update: SlideObject = {
       ...target,
       geometry: {
@@ -66,10 +72,10 @@ export function ObjectComponent(props: SlideObject & {onMouse: (type: 'move' | '
   }
 
   return <div style={geometry} className="absolute bg-surface0 p-2">
-    <button onMouseDown={() => startTracking("move")} className="absolute w-16 h-16 bg-blue rounded-full flex justify-center items-center hover:bg-teal transition" style={{top: 0, left: 0, transform: "translate(-50%, -50%)"}}>
+    <button onMouseDown={() => startTracking("move")} className="opacity-50 hover:opacity-100 absolute w-16 h-16 bg-blue rounded-full flex justify-center items-center transition" style={{top: 0, left: 0, transform: "translate(-50%, -50%)"}}>
       <ViewfinderCircleIcon className="text-base rotate-45 size-8" />
     </button>
-    <button onMouseDown={() => startTracking("resize")} className="absolute w-16 h-16 bg-green rounded-full flex justify-center items-center hover:bg-teal transition" style={{bottom: 0, right: 0, transform: "translate(50%, 50%)"}}>
+    <button onMouseDown={() => startTracking("resize")} className="opacity-50 hover:opacity-100 absolute w-16 h-16 bg-green rounded-full flex justify-center items-center transition" style={{bottom: 0, right: 0, transform: "translate(50%, 50%)"}}>
       <ChevronUpDownIcon className="text-base -rotate-45 size-8" />
     </button>
     {body}
