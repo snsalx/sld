@@ -23,10 +23,10 @@ export default function Canvas({slide, setSlide}: {slide: Slide, setSlide: (upda
     const update: SlideObject = {
       ...target,
       geometry: {
-        left: type === "move" ? x / box.width * 100 : oldGeo.left,
-        top: type === "move" ? y / box.height * 100 : oldGeo.top,
-        width: type === "resize" ? x / box.width * 100 - oldGeo.left : oldGeo.width,
-        height: type === "resize" ? y / box.height * 100 - oldGeo.top : oldGeo.height,
+        left: snapToGrid(type === "move" ? x / box.width * 100 : oldGeo.left),
+        top: snapToGrid(type === "move" ? y / box.height * 100 : oldGeo.top),
+        width: snapToGrid(type === "resize" ? x / box.width * 100 - oldGeo.left : oldGeo.width),
+        height: snapToGrid(type === "resize" ? y / box.height * 100 - oldGeo.top : oldGeo.height),
         borderRadius: oldGeo.borderRadius,
       },
     }
@@ -43,6 +43,11 @@ export default function Canvas({slide, setSlide}: {slide: Slide, setSlide: (upda
         key={object.id} />
     ))}
   </div>
+}
+
+const gridDivisions = 2; // lower number means finer grid
+function snapToGrid(coordinate: number) {
+  return Math.floor(coordinate / gridDivisions) * gridDivisions;
 }
 
 export function ObjectComponent(props: SlideObject & {onMouse: (type: 'move' | 'resize', x: number, y: number) => void}) {
