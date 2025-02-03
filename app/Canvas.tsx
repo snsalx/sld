@@ -74,6 +74,13 @@ export default function Canvas({
     setSlide({ ...slide, objects: [...rest, { ...target, selected: true }] });
   }
 
+  // bug: no unselect support
+
+  function handleObjectUpdate(target: SlideObject) {
+    const rest = slide.objects.filter((obj) => obj.id !== target.id);
+    setSlide({ ...slide, objects: [...rest, target] });
+  }
+
   return (
     <div ref={ref} className="h-full relative">
       {slide.objects.map((object) => (
@@ -81,6 +88,7 @@ export default function Canvas({
           {...object}
           onMouse={(type, x, y) => handleMouse(object, type, x, y)}
           onClick={(event) => handleClick(event, object)}
+          onUpdate={handleObjectUpdate}
           key={object.id}
         />
       ))}
@@ -97,6 +105,7 @@ export function ObjectComponent(
   props: SlideObject & {
     onMouse: (type: "move" | "resize", x: number, y: number) => void;
     onClick?: (event: MouseEvent<HTMLDivElement>) => void;
+    onUpdate: (update: SlideObject) => void;
   },
 ) {
   const geometryEntries = Object.entries(props.geometry).map(([k, v]) => [
@@ -121,7 +130,15 @@ export function ObjectComponent(
   let body;
   switch (props.kind) {
     case "text":
-      body = <p>{props.content}</p>;
+      body = (
+        <textarea
+          className="w-full h-full resize-none bg-transparent focus:outline-none p-2"
+          onChange={(event) =>
+            props.onUpdate({ ...props, content: event.target.value })
+          }
+          value={props.content}
+        />
+      );
       break;
     case "image":
       body = (
@@ -137,7 +154,7 @@ export function ObjectComponent(
     <div
       style={geometry}
       className={
-        "absolute bg-surface0 p-2 border-2 rounded-lg" +
+        "absolute bg-surface0 border-2 rounded-lg" +
         (props.selected ? " border-lavender" : " border-crust")
       }
       onMouseDown={props.onClick}
