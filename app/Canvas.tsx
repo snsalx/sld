@@ -3,7 +3,7 @@ import {
   ViewfinderCircleIcon,
 } from "@heroicons/react/16/solid";
 import { Slide, SlideObject } from "./common";
-import { useRef } from "react";
+import { MouseEvent, MouseEventHandler, useRef, useState } from "react";
 
 export default function Canvas({
   slide,
@@ -61,12 +61,26 @@ export default function Canvas({
     setSlide({ ...slide, objects: [...rest, update] });
   }
 
+  function handleClick(event: MouseEvent, target: SlideObject) {
+    let objects = slide.objects;
+
+    if (!event.shiftKey) {
+      objects = slide.objects.map(
+        (object): SlideObject => ({ ...object, selected: false }),
+      );
+    }
+
+    const rest = objects.filter((obj) => obj.id !== target.id);
+    setSlide({ ...slide, objects: [...rest, { ...target, selected: true }] });
+  }
+
   return (
     <div ref={ref} className="h-full relative">
       {slide.objects.map((object) => (
         <ObjectComponent
           {...object}
           onMouse={(type, x, y) => handleMouse(object, type, x, y)}
+          onClick={(event) => handleClick(event, object)}
           key={object.id}
         />
       ))}
@@ -74,14 +88,15 @@ export default function Canvas({
   );
 }
 
-const gridDivisions = 2; // lower number means finer grid
+const gridCellInPercent = 2; // lower number means finer grid
 function snapToGrid(coordinate: number) {
-  return Math.floor(coordinate / gridDivisions) * gridDivisions;
+  return Math.floor(coordinate / gridCellInPercent) * gridCellInPercent;
 }
 
 export function ObjectComponent(
   props: SlideObject & {
     onMouse: (type: "move" | "resize", x: number, y: number) => void;
+    onClick?: (event: MouseEvent<HTMLDivElement>) => void;
   },
 ) {
   const geometryEntries = Object.entries(props.geometry).map(([k, v]) => [
@@ -119,21 +134,32 @@ export function ObjectComponent(
   }
 
   return (
-    <div style={geometry} className="absolute bg-surface0 p-2">
-      <button
-        onMouseDown={() => startTracking("move")}
-        className="opacity-50 hover:opacity-100 absolute w-16 h-16 bg-blue rounded-full flex justify-center items-center transition"
-        style={{ top: 0, left: 0, transform: "translate(-50%, -50%)" }}
-      >
-        <ViewfinderCircleIcon className="text-base rotate-45 size-8" />
-      </button>
-      <button
-        onMouseDown={() => startTracking("resize")}
-        className="opacity-50 hover:opacity-100 absolute w-16 h-16 bg-green rounded-full flex justify-center items-center transition"
-        style={{ bottom: 0, right: 0, transform: "translate(50%, 50%)" }}
-      >
-        <ChevronUpDownIcon className="text-base -rotate-45 size-8" />
-      </button>
+    <div
+      style={geometry}
+      className={
+        "absolute bg-surface0 p-2 border-2 rounded-lg" +
+        (props.selected ? " border-lavender" : " border-text")
+      }
+      onMouseDown={props.onClick}
+    >
+      {props.selected && (
+        <>
+          <button
+            onMouseDown={() => startTracking("move")}
+            className="opacity-50 hover:opacity-100 absolute w-16 h-16 bg-base fill-text hover:fill-base hover:bg-blue rounded-full flex justify-center items-center transition"
+            style={{ top: 0, left: 0, transform: "translate(-50%, -50%)" }}
+          >
+            <ViewfinderCircleIcon className="text-base rotate-45 size-8 fill-inherit" />
+          </button>
+          <button
+            onMouseDown={() => startTracking("resize")}
+            className="opacity-50 hover:opacity-100 absolute w-16 h-16 bg-base fill-text hover:fill-base hover:bg-green rounded-full flex justify-center items-center transition"
+            style={{ bottom: 0, right: 0, transform: "translate(50%, 50%)" }}
+          >
+            <ChevronUpDownIcon className="text-base -rotate-45 size-8 fill-inherit" />
+          </button>
+        </>
+      )}
       {body}
     </div>
   );

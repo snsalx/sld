@@ -9,6 +9,7 @@ export type SlideObject =
   | {
       kind: "image";
       id: string;
+      selected?: boolean;
       fit: "cover" | "contain";
       geometry: Geometry;
       src: string;
@@ -16,15 +17,17 @@ export type SlideObject =
     }
   | {
       kind: "text";
-      id: string;
       geometry: Geometry;
+      selected?: boolean;
+      id: string;
       content: string;
       link?: SlideLink;
     }
   | {
       kind: "button";
-      id: string;
       label: string;
+      selected?: boolean;
+      id: string;
       geometry: Geometry;
       link?: SlideLink;
     };
