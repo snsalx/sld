@@ -56,7 +56,7 @@ export function createEmptySlide(): Slide {
 export function createDemoSlide(): Slide {
   return {
     id: crypto.randomUUID(),
-    name: "Demo slide",
+    name: "Demo slide #" + crypto.randomUUID().at(-1),
     objects: [
       {
         kind: "text",

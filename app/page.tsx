@@ -10,7 +10,7 @@ const initialSlide = createDemoSlide();
 export default function Home() {
   const [showTree, setShowTree] = useState(false);
 
-  const [slides, setSlides] = useState([initialSlide]);
+  const [slides, setSlides] = useState([initialSlide, createDemoSlide()]);
   const [currentSlide, setCurrentSlide] = useState(initialSlide.id);
 
   const objects = slides.find((slide) => slide.id === currentSlide);

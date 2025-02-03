@@ -43,6 +43,7 @@ export default function Toolbar({
 
       <ObjectProperties
         objects={selectedObjects}
+        slideList={slides}
         onUpdate={(update) =>
           updateCurrentSlide({
             ...currentSlide,
@@ -56,9 +57,11 @@ export default function Toolbar({
 
 function ObjectProperties({
   objects,
+  slideList,
   onUpdate,
 }: {
   objects: SlideObject[];
+  slideList: Slide[];
   onUpdate: (update: SlideObject[]) => void;
 }) {
   if (objects.length === 0) {
@@ -74,13 +77,15 @@ function ObjectProperties({
         value={object.link?.kind || "none"}
         onChange={(value) => {
           onUpdate(
-            objects.map((object): SlideObject => ({
-              ...object,
-              link:
-                value === "none"
-                  ? undefined
-                  : { kind: value, value: object.link?.value || "" },
-            })),
+            objects.map(
+              (object): SlideObject => ({
+                ...object,
+                link:
+                  value === "none"
+                    ? undefined
+                    : { kind: value, value: object.link?.value || "" },
+              }),
+            ),
           );
         }}
       />
@@ -101,6 +106,25 @@ function ObjectProperties({
               ),
             )
           }
+        />
+      )}
+
+      {object.link?.kind === "slide" && (
+        <Select
+          options={Object.fromEntries(
+            slideList.map((slide) => [slide.id, slide.name]),
+          )}
+          onChange={(value) =>
+            onUpdate(
+              objects.map(
+                (object): SlideObject => ({
+                  ...object,
+                  link: { kind: "slide", value: String(value) },
+                }),
+              ),
+            )
+          }
+          value={object.link.value}
         />
       )}
     </div>
