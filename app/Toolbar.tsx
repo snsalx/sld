@@ -1,6 +1,6 @@
 import Select from "./Select";
 import IconButton from "./Button";
-import { Slide } from "./common";
+import { Slide, SlideLink, SlideObject } from "./common";
 import { useState } from "react";
 
 export default function Toolbar({
@@ -25,6 +25,9 @@ export default function Toolbar({
   const setName = (name: string) =>
     updateCurrentSlide({ ...currentSlide, name });
 
+  const selectedObjects = currentSlide.objects.filter((obj) => obj.selected);
+  const unselectedObjects = currentSlide.objects.filter((obj) => !obj.selected);
+
   return (
     <footer className="bg-base p-4 flex justify-between">
       <div className="flex gap-4">
@@ -38,9 +41,68 @@ export default function Toolbar({
         <IconButton action="add" color="green" />
       </div>
 
-      <div className="flex gap-4">
-        <Select options={{ none: "No link", section: "Slide", url: "URL" }} />
-      </div>
+      <ObjectProperties
+        objects={selectedObjects}
+        onUpdate={(update) =>
+          updateCurrentSlide({
+            ...currentSlide,
+            objects: [...unselectedObjects, ...update],
+          })
+        }
+      />
     </footer>
+  );
+}
+
+function ObjectProperties({
+  objects,
+  onUpdate,
+}: {
+  objects: SlideObject[];
+  onUpdate: (update: SlideObject[]) => void;
+}) {
+  if (objects.length === 0) {
+    return <></>;
+  }
+
+  const object = objects[0];
+
+  return (
+    <div className="flex gap-4">
+      <Select
+        options={{ none: "No link", slide: "Slide", url: "URL" }}
+        value={object.link?.kind || "none"}
+        onChange={(value) => {
+          onUpdate(
+            objects.map((object): SlideObject => ({
+              ...object,
+              link:
+                value === "none"
+                  ? undefined
+                  : { kind: value, value: object.link?.value || "" },
+            })),
+          );
+        }}
+      />
+
+      {object.link?.kind === "url" && (
+        <input
+          className="p-4 bg-transparent text-lg w-96 h-16 focus:outline-none focus:border-green border-2 border-text rounded-lg"
+          placeholder="https://example.com"
+          type="url"
+          value={object.link.value}
+          onChange={(event) =>
+            onUpdate(
+              objects.map(
+                (object): SlideObject => ({
+                  ...object,
+                  link: { kind: "url", value: event.target.value },
+                }),
+              ),
+            )
+          }
+        />
+      )}
+    </div>
   );
 }

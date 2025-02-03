@@ -1,17 +1,17 @@
-export default function Select({
+export default function Select<T extends Record<string, string>>({
   options,
-  autoClick,
+  value,
   onChange,
 }: {
-  options: Record<string, string>;
-  autoClick?: boolean;
-  onChange?: (key: string) => void;
+  options: T;
+  value: string;
+  onChange?: (key: keyof T) => void;
 }) {
   return (
     <select
-      className="bg-base text-text p-4 text-lg focus:outline-none border-2 border-text rounded-lg h-16 w-full"
+      className="bg-base text-text p-4 text-lg focus:outline-none border-2 border-text rounded-lg h-16 w-40"
       onChange={(event) => onChange?.(event.target.value)}
-      autoFocus={autoClick}
+      value={value}
     >
       {Object.entries(options).map(([key, value]) => (
         <option key={key} value={key}>
