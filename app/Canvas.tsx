@@ -138,7 +138,7 @@ export function ObjectComponent(
       style={geometry}
       className={
         "absolute bg-surface0 p-2 border-2 rounded-lg" +
-        (props.selected ? " border-lavender" : " border-text")
+        (props.selected ? " border-lavender" : " border-crust")
       }
       onMouseDown={props.onClick}
     >
