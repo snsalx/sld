@@ -26,7 +26,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col h-screen latte dark:mocha text-text">
+    <div className="flex flex-col h-screen">
       {showTree ? (
         <main className="bg-base h-full border-b-2 border-b-crust">Tree</main>
       ) : (

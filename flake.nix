@@ -11,7 +11,11 @@
         buildInputs = with pkgs; [
           nodejs_22
           nodePackages.typescript-language-server
-          (pkgs.writeShellScriptBin "run" "npm run dev")
+          pocketbase
+          (pkgs.writeShellScriptBin "run" ''
+            npm run dev&
+            pocketbase serve
+          '')
         ];
       };
     }

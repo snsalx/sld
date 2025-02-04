@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${font.variable} ${font.variable} antialiased`}
+        className={`${font.variable} ${font.variable} antialiased latte dark:mocha text-text`}
         style={{ fontFamily: "JetBrains Mono" }}
       >
         {children}
