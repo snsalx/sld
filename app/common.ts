@@ -1,3 +1,12 @@
+export type Project = {
+  name: string;
+  slides: Slide[];
+
+  author: string;
+  public: boolean;
+  indexable: boolean;
+}
+
 export type Slide = {
   id: string;
   name: string;
