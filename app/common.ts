@@ -5,32 +5,26 @@ export type Slide = {
   objects: SlideObject[];
 };
 
-export type SlideObject =
-  | {
-      kind: "image";
-      id: string;
-      selected?: boolean;
-      fit: "cover" | "contain";
-      geometry: Geometry;
-      src: string;
-      link?: SlideLink;
-    }
-  | {
-      kind: "text";
-      geometry: Geometry;
-      selected?: boolean;
-      id: string;
-      content: string;
-      link?: SlideLink;
-    }
-  | {
-      kind: "button";
-      label: string;
-      selected?: boolean;
-      id: string;
-      geometry: Geometry;
-      link?: SlideLink;
-    };
+export type SlideObject = {
+  id: string;
+  geometry: Geometry;
+  content: ContentImage | ContentText | ContentButton;
+  selected?: boolean;
+  link?: SlideLink;
+};
+
+export type ContentImage = {
+  kind: "image";
+  src: string;
+  fit: "cover" | "contain";
+};
+export type ContentText = {
+  kind: "text";
+  body: string;
+};
+export type ContentButton = {
+  kind: "button";
+};
 
 export type Geometry = {
   left: number;
@@ -59,9 +53,11 @@ export function createDemoSlide(): Slide {
     name: "Demo slide #" + crypto.randomUUID().at(-1),
     objects: [
       {
-        kind: "text",
         id: crypto.randomUUID(),
-        content: "Hello, world!",
+        content: {
+          kind: "text",
+          body: "Hello, world!",
+        },
         geometry: {
           left: 20,
           top: 10,
@@ -70,10 +66,12 @@ export function createDemoSlide(): Slide {
         },
       },
       {
-        kind: "image",
         id: crypto.randomUUID(),
-        src: "https://upload.wikimedia.org/wikipedia/commons/3/30/React_Logo_SVG.svg",
-        fit: "contain",
+        content: {
+          kind: "image",
+          src: "https://upload.wikimedia.org/wikipedia/commons/3/30/React_Logo_SVG.svg",
+          fit: "contain",
+        },
         geometry: {
           left: 40,
           top: 40,

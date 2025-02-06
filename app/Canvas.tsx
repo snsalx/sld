@@ -3,7 +3,7 @@ import {
   ViewfinderCircleIcon,
 } from "@heroicons/react/16/solid";
 import { Slide, SlideObject } from "./common";
-import { MouseEvent, MouseEventHandler, useRef, useState } from "react";
+import { MouseEvent, useRef } from "react";
 
 export default function Canvas({
   slide,
@@ -128,25 +128,34 @@ export function ObjectComponent(
   }
 
   let body;
-  switch (props.kind) {
+  const content = props.content;
+  switch (content.kind) {
     case "text":
       body = (
         <textarea
           className="w-full h-full resize-none bg-transparent focus:outline-none p-2"
           onChange={(event) =>
-            props.onUpdate({ ...props, content: event.target.value })
+            props.onUpdate({
+              ...props,
+              content: { ...content, body: event.target.value },
+            })
           }
-          value={props.content}
+          value={content.body}
         />
       );
       break;
     case "image":
       body = (
-        <img src={props.src} className={`w-full h-full object-${props.fit}`} />
+        <img
+          src={content.src}
+          className={`w-full h-full object-${content.fit}`}
+        />
       );
       break;
     case "button":
-      body = <button className="bg-green">{props.label}</button>;
+      body = (
+        <button className="bg-transparent border-2 border-blue w-full h-full"></button>
+      );
       break;
   }
 
