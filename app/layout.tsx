@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import BackendContextProvider, { BackendContext } from "./Backend";
 
 const font = JetBrains_Mono({
   variable: "--font-geist-sans",
@@ -23,7 +24,7 @@ export default function RootLayout({
         className={`${font.variable} ${font.variable} antialiased latte dark:mocha text-text`}
         style={{ fontFamily: "JetBrains Mono" }}
       >
-        {children}
+        <BackendContextProvider>{children}</BackendContextProvider>
       </body>
     </html>
   );

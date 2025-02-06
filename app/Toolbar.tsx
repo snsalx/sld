@@ -2,6 +2,7 @@ import Select from "./Select";
 import IconButton from "./Button";
 import { Slide, SlideLink, SlideObject } from "./common";
 import { useState } from "react";
+import ProfileButton from "./ProfileButton";
 
 export default function Toolbar({
   currentSlideId,
@@ -31,6 +32,7 @@ export default function Toolbar({
   return (
     <footer className="bg-base p-4 flex justify-between">
       <div className="flex gap-4">
+        <ProfileButton />
         <input
           className="p-4 bg-transparent text-lg w-96 h-16 focus:outline-none focus:border-green border-2 border-text rounded-lg"
           placeholder="Slide title"
