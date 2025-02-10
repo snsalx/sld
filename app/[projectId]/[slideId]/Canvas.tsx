@@ -2,7 +2,7 @@ import {
   ChevronUpDownIcon,
   ViewfinderCircleIcon,
 } from "@heroicons/react/16/solid";
-import { Slide, SlideObject } from "./common";
+import { Slide, SlideObject } from "../../common";
 import { MouseEvent, useRef } from "react";
 
 export default function Canvas({

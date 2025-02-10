@@ -1,33 +1,27 @@
-import Select from "./Select";
-import IconButton from "./Button";
-import { Slide, SlideLink, SlideObject } from "./common";
-import { useState } from "react";
-import ProfileButton from "./ProfileButton";
+import Select from "../../Select";
+import { Slide, SlideObject } from "../../common";
+import ProfileButton from "../../ProfileButton";
+import { PlusIcon, Square3Stack3DIcon } from "@heroicons/react/16/solid";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Toolbar({
-  currentSlideId,
-  setCurrentSlideId,
-  slides,
-  updateCurrentSlide,
-  toggleTreeView,
+  slide,
+  projectSlides,
+  onRename,
 }: {
-  currentSlideId: string;
-  setCurrentSlideId: (slide: string) => void;
-  slides: Slide[];
-  updateCurrentSlide: (update: Slide) => void;
-  toggleTreeView: () => void;
+  slide: Slide,
+  projectSlides: Slide[],
+  onRename: (update: Slide) => void;
 }) {
-  const currentSlide = slides.find((slide) => slide.id === currentSlideId);
-
-  if (!currentSlide) {
-    throw new Error("No slide selected (Toolbar.tsx)");
-  }
+  const pathName = usePathname().split('/');
+  const linkUp = '/' + pathName.at(-2)!
 
   const setName = (name: string) =>
-    updateCurrentSlide({ ...currentSlide, name });
+    onRename({ ...slide, name });
 
-  const selectedObjects = currentSlide.objects.filter((obj) => obj.selected);
-  const unselectedObjects = currentSlide.objects.filter((obj) => !obj.selected);
+  const selectedObjects = slide.objects.filter((obj) => obj.selected);
+  const unselectedObjects = slide.objects.filter((obj) => !obj.selected);
 
   return (
     <footer className="bg-base p-4 flex justify-between">
@@ -36,19 +30,28 @@ export default function Toolbar({
         <input
           className="p-4 bg-transparent text-lg w-96 h-16 focus:outline-none focus:border-green border-2 border-text rounded-lg"
           placeholder="Slide title"
-          value={currentSlide.name}
+          value={slide.name}
           onChange={(event) => setName(event.target.value)}
         />
-        <IconButton action="tree" color="blue" onClick={toggleTreeView} />
-        <IconButton action="add" color="green" />
+        <Link
+          href={linkUp}
+          className={`w-16 h-16 text-base bg-blue hover:scale-95 transition flex justify-center items-center rounded-lg`}
+        >
+          <Square3Stack3DIcon className="size-8" />
+        </Link>
+        <button
+          className={`w-16 h-16 text-base bg-green hover:scale-95 transition flex justify-center items-center rounded-lg`}
+        >
+          <PlusIcon className="size-8" />
+        </button>
       </div>
 
       <ObjectProperties
         objects={selectedObjects}
-        slideList={slides}
+        slideList={projectSlides}
         onUpdate={(update) =>
-          updateCurrentSlide({
-            ...currentSlide,
+          onRename({
+            ...slide,
             objects: [...unselectedObjects, ...update],
           })
         }
