@@ -35,6 +35,15 @@ export default function SlideEditor( props : {
   }
 
   function updateCurrentSlide(update: Slide) {
+    update.objects.map(object => {
+      if (currentSlide && currentSlide.objects.find(potential => potential === object)) {
+        console.log('object', object, 'is unchanged, skipping')
+        return
+      }
+
+      backend.collection('objects').update(object.id, object)
+    })
+
     setCurrentSlide(update)
   }
 
