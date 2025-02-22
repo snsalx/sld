@@ -36,14 +36,14 @@ export default function Home() {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen bg-mantle">
-      <div className="bg-base p-2 flex flex-col gap-2 rounded-lg">
-        <h1 className="text-2xl text-center mb-4">Projects</h1>
+    <div className="flex h-screen items-center justify-center bg-mantle">
+      <div className="flex flex-col gap-2 rounded-lg bg-base p-2">
+        <h1 className="mb-4 text-center text-2xl">Projects</h1>
         {projects.map((project) => (
           <a
             href={"/" + project.id}
             key={project.id}
-            className="flex gap-2 items-center justify-between w-full hover:text-blue transition p-2 text-xl"
+            className="flex w-full items-center justify-between gap-2 p-2 text-xl transition hover:text-blue"
           >
             <h2>{project.name}</h2>
             <PlayCircleIcon className="size-8" />

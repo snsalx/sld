@@ -1,7 +1,14 @@
 import Select from "../../Select";
 import { Slide, SlideObject } from "../../common";
 import ProfileButton from "../../ProfileButton";
-import { ArrowTopRightOnSquareIcon, Bars3CenterLeftIcon, MapPinIcon, PhotoIcon, PlusIcon, Square3Stack3DIcon } from "@heroicons/react/16/solid";
+import {
+  ArrowTopRightOnSquareIcon,
+  Bars3CenterLeftIcon,
+  MapPinIcon,
+  PhotoIcon,
+  PlusIcon,
+  Square3Stack3DIcon,
+} from "@heroicons/react/16/solid";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -23,42 +30,42 @@ export default function Toolbar({
   const unselectedObjects = slide.objects.filter((obj) => !obj.selected);
 
   return (
-    <footer className="bg-mantle p-4 flex justify-between">
+    <footer className="flex justify-between bg-mantle p-4">
       <div className="flex gap-4">
         <ProfileButton />
         <Link
           href={linkUp}
-          className={`w-16 h-16 border-2 border-crust text-base bg-base text-text hover:scale-95 hover:border-sky transition flex justify-center items-center rounded-lg`}
+          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-text transition hover:scale-95 hover:border-sky`}
           title="All slides"
         >
           <Square3Stack3DIcon className="size-8" />
         </Link>
         <input
-          className="p-4 bg-base text-lg w-96 h-16 focus:outline-none hover:border-sky transition border-2 border-crust rounded-lg"
+          className="h-16 w-96 rounded-lg border-2 border-crust bg-base p-4 text-lg transition hover:border-sky focus:outline-none"
           placeholder="Slide title"
           defaultValue={slide.name}
           onBlur={(event) => onRename(event.target.value)}
         />
         <button
-          className={`w-16 h-16 border-2 border-crust text-base bg-base text-blue hover:scale-95 hover:border-sky transition flex justify-center items-center rounded-lg`}
+          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-blue transition hover:scale-95 hover:border-sky`}
           title="Add text"
         >
           <Bars3CenterLeftIcon className="size-8" />
         </button>
         <button
-          className={`w-16 h-16 border-2 border-crust text-base bg-base text-sapphire hover:scale-95 hover:border-sky transition flex justify-center items-center rounded-lg`}
+          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-sapphire transition hover:scale-95 hover:border-sky`}
           title="Add image"
         >
           <PhotoIcon className="size-8" />
         </button>
         <button
-          className={`w-16 h-16 border-2 border-crust text-base bg-base text-sky hover:scale-95 hover:border-sky transition flex justify-center items-center rounded-lg`}
+          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-sky transition hover:scale-95 hover:border-sky`}
           title="Add button"
         >
           <ArrowTopRightOnSquareIcon className="size-8" />
         </button>
         <button
-          className={`w-16 h-16 border-2 border-crust text-base bg-base text-teal cursor-not-allowed flex justify-center items-center rounded-lg`}
+          className={`flex h-16 w-16 cursor-not-allowed items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-teal`}
           title="Add map (not yet implemented)"
         >
           <MapPinIcon className="size-8" />
@@ -116,7 +123,7 @@ function ObjectProperties({
 
       {object.link?.kind === "url" && (
         <input
-          className="p-4 bg-base text-lg w-96 h-16 focus:outline-none transition hover:border-sky border-2 border-crust rounded-lg"
+          className="h-16 w-96 rounded-lg border-2 border-crust bg-base p-4 text-lg transition hover:border-sky focus:outline-none"
           placeholder="https://example.com"
           type="url"
           value={object.link.value}

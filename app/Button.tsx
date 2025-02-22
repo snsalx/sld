@@ -37,7 +37,7 @@ export default function IconButton({
 
   return (
     <button
-      className={`w-16 h-16 text-base bg-${colors[color]} hover:scale-95 transition flex justify-center items-center rounded-lg`}
+      className={`h-16 w-16 text-base bg-${colors[color]} flex items-center justify-center rounded-lg transition hover:scale-95`}
       onClick={onClick}
     >
       <Icon className="size-8" />

@@ -23,14 +23,14 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center bg-mantle">
-      <form className="w-80 grid bg-base p-2 gap-2" action={handleSubmit}>
+    <div className="flex h-screen w-screen items-center justify-center bg-mantle">
+      <form className="grid w-80 gap-2 bg-base p-2" action={handleSubmit}>
         <label>
           E-mail
           <input
             name="email"
             type="email"
-            className="bg-mantle p-2 rounded-lg"
+            className="rounded-lg bg-mantle p-2"
           />
         </label>
 
@@ -39,11 +39,11 @@ export default function LoginPage() {
           <input
             name="password"
             type="password"
-            className="bg-mantle p-2 rounded-lg"
+            className="rounded-lg bg-mantle p-2"
           />
         </label>
 
-        <button className="p-2 bg-blue text-base rounded-lg">Log in</button>
+        <button className="rounded-lg bg-blue p-2 text-base">Log in</button>
         <p>
           Don't have an account? <a href="/login">Register</a>
         </p>

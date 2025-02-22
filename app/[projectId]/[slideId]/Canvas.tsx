@@ -82,7 +82,7 @@ export default function Canvas({
   }
 
   return (
-    <div ref={ref} className="h-full relative">
+    <div ref={ref} className="relative h-full">
       {slide.objects.map((object) => (
         <ObjectComponent
           {...object}
@@ -133,7 +133,7 @@ export function ObjectComponent(
     case "text":
       body = (
         <textarea
-          className="w-full h-full resize-none bg-transparent focus:outline-none p-2"
+          className="h-full w-full resize-none bg-transparent p-2 focus:outline-none"
           onChange={(event) =>
             props.onUpdate({
               ...props,
@@ -148,13 +148,13 @@ export function ObjectComponent(
       body = (
         <img
           src={content.src}
-          className={`w-full h-full object-${content.fit}`}
+          className={`h-full w-full object-${content.fit}`}
         />
       );
       break;
     case "button":
       body = (
-        <button className="bg-transparent border-2 border-blue w-full h-full"></button>
+        <button className="h-full w-full border-2 border-blue bg-transparent"></button>
       );
       break;
   }
@@ -163,7 +163,7 @@ export function ObjectComponent(
     <div
       style={geometry}
       className={
-        "absolute bg-surface0 border-2 rounded-lg" +
+        "absolute rounded-lg border-2 bg-surface0" +
         (props.selected ? " border-lavender" : " border-crust")
       }
       onMouseDown={props.onClick}
@@ -172,17 +172,17 @@ export function ObjectComponent(
         <>
           <button
             onMouseDown={() => startTracking("move")}
-            className="opacity-50 hover:opacity-100 absolute w-16 h-16 bg-base fill-text hover:fill-base hover:bg-blue rounded-full flex justify-center items-center transition"
+            className="absolute flex h-16 w-16 items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-blue hover:fill-base hover:opacity-100"
             style={{ top: 0, left: 0, transform: "translate(-50%, -50%)" }}
           >
-            <ViewfinderCircleIcon className="text-base rotate-45 size-8 fill-inherit" />
+            <ViewfinderCircleIcon className="size-8 rotate-45 fill-inherit text-base" />
           </button>
           <button
             onMouseDown={() => startTracking("resize")}
-            className="opacity-50 hover:opacity-100 absolute w-16 h-16 bg-base fill-text hover:fill-base hover:bg-green rounded-full flex justify-center items-center transition"
+            className="absolute flex h-16 w-16 items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-green hover:fill-base hover:opacity-100"
             style={{ bottom: 0, right: 0, transform: "translate(50%, 50%)" }}
           >
-            <ChevronUpDownIcon className="text-base -rotate-45 size-8 fill-inherit" />
+            <ChevronUpDownIcon className="size-8 -rotate-45 fill-inherit text-base" />
           </button>
         </>
       )}

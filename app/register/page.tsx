@@ -28,11 +28,11 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center bg-mantle">
-      <form className="w-80 grid bg-base p-2 gap-2" action={handleSubmit}>
+    <div className="flex h-screen w-screen items-center justify-center bg-mantle">
+      <form className="grid w-80 gap-2 bg-base p-2" action={handleSubmit}>
         <label>
           Name
-          <input name="name" className="bg-mantle p-2 rounded-lg" />
+          <input name="name" className="rounded-lg bg-mantle p-2" />
         </label>
 
         <label>
@@ -40,7 +40,7 @@ export default function RegisterPage() {
           <input
             name="email"
             type="email"
-            className="bg-mantle p-2 rounded-lg"
+            className="rounded-lg bg-mantle p-2"
           />
         </label>
 
@@ -49,7 +49,7 @@ export default function RegisterPage() {
           <input
             name="password"
             type="password"
-            className="bg-mantle p-2 rounded-lg"
+            className="rounded-lg bg-mantle p-2"
           />
         </label>
 
@@ -58,11 +58,11 @@ export default function RegisterPage() {
           <input
             name="passwordConfirm"
             type="password"
-            className="bg-mantle p-2 rounded-lg"
+            className="rounded-lg bg-mantle p-2"
           />
         </label>
 
-        <button className="p-2 bg-blue text-base rounded-lg">Register</button>
+        <button className="rounded-lg bg-blue p-2 text-base">Register</button>
         <p>
           Already have an account? <a href="/login">Log in</a>
         </p>
