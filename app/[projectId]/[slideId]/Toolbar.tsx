@@ -19,12 +19,14 @@ export default function Toolbar({
   onChange,
   onRename,
   onAddText,
+  onAddImage,
 }: {
   slide: Slide;
   projectSlides: Slide[];
   onChange: (update: Slide) => void;
   onRename: (name: string) => void;
   onAddText: () => void;
+  onAddImage: () => void;
 }) {
   const pathName = usePathname().split("/");
   const linkUp = "/" + pathName.at(-2)!;
@@ -59,6 +61,7 @@ export default function Toolbar({
         <button
           className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-sapphire transition hover:scale-95 hover:border-sky`}
           title="Add image"
+          onClick={onAddImage}
         >
           <PhotoIcon className="size-8" />
         </button>

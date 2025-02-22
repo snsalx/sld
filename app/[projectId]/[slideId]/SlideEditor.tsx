@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Toolbar from "./Toolbar";
 import {
   ContentButton,
@@ -21,6 +21,7 @@ export default function SlideEditor(props: {
   const backend = useContext(BackendContext)!;
   const [slides, setSlides] = useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = useState<Slide>();
+  const upload = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     refetch();
@@ -52,13 +53,11 @@ export default function SlideEditor(props: {
       }
     });
 
-    backend
-      .collection("slides")
-      .update(props.slideId, {
-        objects: currentSlide.objects
-          .map((obj) => obj.id)
-          .filter((obj) => !deletedObjects.includes(obj)),
-      });
+    backend.collection("slides").update(props.slideId, {
+      objects: currentSlide.objects
+        .map((obj) => obj.id)
+        .filter((obj) => !deletedObjects.includes(obj)),
+    });
 
     setCurrentSlide(update);
   }
@@ -84,10 +83,11 @@ export default function SlideEditor(props: {
 
   async function createObject(
     content: ContentImage | ContentText | ContentButton,
+    file?: File,
   ) {
     if (!currentSlide) return;
 
-    const request: Omit<SlideObject, "id"> = {
+    const request = {
       geometry: {
         top: 2,
         left: 2,
@@ -95,11 +95,20 @@ export default function SlideEditor(props: {
         width: 32,
       },
       content,
+      image: file,
     };
 
     const object = await backend
       .collection("objects")
       .create<SlideObject>(request);
+    if (object.content.kind === "image") {
+      object.content.src =
+        backend.baseURL +
+        "/api/files/objects/" +
+        object.id +
+        "/" +
+        (object as any).image;
+    }
     const objects = [...currentSlide.objects, object];
 
     await backend
@@ -121,6 +130,24 @@ export default function SlideEditor(props: {
         onChange={updateCurrentSlide}
         onRename={renameSlide}
         onAddText={() => createObject({ kind: "text", body: "" })}
+        onAddImage={() => {
+          if (!upload.current) return;
+
+          upload.current.click();
+        }}
+      />
+      <input
+        className="hidden"
+        type="file"
+        ref={upload}
+        onChange={(event) => {
+          if (!event.target.files) return;
+
+          createObject(
+            { kind: "image", src: "", fit: "cover" },
+            event.target.files[0],
+          );
+        }}
       />
     </div>
   );

@@ -148,7 +148,7 @@ export function ObjectComponent(
       body = (
         <img
           src={content.src}
-          className={`h-full w-full object-${content.fit}`}
+          className={`h-full w-full ${content.fit === "cover" ? "object-cover" : "object-contain"}`}
         />
       );
       break;
