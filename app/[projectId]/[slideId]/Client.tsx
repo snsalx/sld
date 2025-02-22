@@ -59,7 +59,7 @@ export default function SlideEditor(props: {
   }
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen overflow-hidden">
       <main className="bg-base h-full border-b-2 border-b-crust">
         <Canvas slide={currentSlide} setSlide={updateCurrentSlide} />
       </main>
