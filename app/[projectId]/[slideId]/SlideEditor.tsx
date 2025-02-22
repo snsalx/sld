@@ -31,17 +31,34 @@ export default function SlideEditor(props: {
   }
 
   function updateCurrentSlide(update: Slide) {
-    update.objects.map((object) => {
-      if (
-        currentSlide &&
-        currentSlide.objects.find((potential) => potential === object)
-      ) {
+    if (!currentSlide) return;
+
+    const deletedObjects: string[] = [];
+
+    currentSlide.objects.map((object) => {
+      if (update.objects.find((potential) => potential === object)) {
         console.log("object", object, "is unchanged, skipping");
         return;
       }
 
-      backend.collection("objects").update(object.id, object);
+      const updatedObject = update.objects.find(
+        (potential) => potential.id === object.id,
+      );
+      if (updatedObject) {
+        backend.collection("objects").update(object.id, updatedObject);
+      } else {
+        backend.collection("objects").delete(object.id);
+        deletedObjects.push(object.id);
+      }
     });
+
+    backend
+      .collection("slides")
+      .update(props.slideId, {
+        objects: currentSlide.objects
+          .map((obj) => obj.id)
+          .filter((obj) => !deletedObjects.includes(obj)),
+      });
 
     setCurrentSlide(update);
   }

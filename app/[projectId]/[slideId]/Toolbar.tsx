@@ -8,6 +8,7 @@ import {
   PhotoIcon,
   PlusIcon,
   Square3Stack3DIcon,
+  TrashIcon,
 } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -84,6 +85,9 @@ export default function Toolbar({
             objects: [...unselectedObjects, ...update],
           })
         }
+        onDelete={() => {
+          onChange({ ...slide, objects: unselectedObjects });
+        }}
       />
     </footer>
   );
@@ -93,10 +97,12 @@ function ObjectProperties({
   objects,
   slideList,
   onUpdate,
+  onDelete,
 }: {
   objects: SlideObject[];
   slideList: Slide[];
   onUpdate: (update: SlideObject[]) => void;
+  onDelete: () => void;
 }) {
   if (objects.length === 0) {
     return <></>;
@@ -161,6 +167,13 @@ function ObjectProperties({
           value={object.link.value}
         />
       )}
+      <button
+        className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-red transition hover:scale-95 hover:border-red`}
+        title="Delete object"
+        onClick={onDelete}
+      >
+        <TrashIcon className="size-8" />
+      </button>
     </div>
   );
 }
