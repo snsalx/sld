@@ -7,44 +7,55 @@ import Canvas from "./Canvas";
 import { usePathname } from "next/navigation";
 import { BackendContext } from "@/app/Backend";
 
-export default function SlideEditor( props : {
-   projectId: string, slideId: string 
+export default function SlideEditor(props: {
+  projectId: string;
+  slideId: string;
 }) {
   const backend = useContext(BackendContext)!;
   const [slides, setSlides] = useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = useState<Slide>();
 
   useEffect(() => {
-    Promise.allSettled([list(), one()])
-
-    async function list() {
-      const project = await backend.collection('projects').getOne(props.projectId, {expand: 'slides'})
-
-      setSlides(project.expand!.slides)
-    }
-
-    async function one() {
-      const slide = await backend.collection('slides').getOne<Omit<Slide, "objects"> & {expand: any}>(props.slideId, {expand: 'objects'})
-
-      setCurrentSlide({...slide, objects: slide.expand!.objects})
-    }
-  }, [props])
+    refetch();
+  }, [props]);
 
   if (!currentSlide) {
-    return <div>Loading slide...</div>
+    return <div>Loading slide...</div>;
   }
 
   function updateCurrentSlide(update: Slide) {
-    update.objects.map(object => {
-      if (currentSlide && currentSlide.objects.find(potential => potential === object)) {
-        console.log('object', object, 'is unchanged, skipping')
-        return
+    update.objects.map((object) => {
+      if (
+        currentSlide &&
+        currentSlide.objects.find((potential) => potential === object)
+      ) {
+        console.log("object", object, "is unchanged, skipping");
+        return;
       }
 
-      backend.collection('objects').update(object.id, object)
-    })
+      backend.collection("objects").update(object.id, object);
+    });
 
-    setCurrentSlide(update)
+    setCurrentSlide(update);
+  }
+
+  async function renameSlide(name: string) {
+    await backend.collection("slides").update(props.slideId, { name });
+    refetch();
+  }
+
+  async function refetch() {
+    const project = await backend
+      .collection("projects")
+      .getOne(props.projectId, { expand: "slides" });
+    const slide = await backend
+      .collection("slides")
+      .getOne<
+        Omit<Slide, "objects"> & { expand: any }
+      >(props.slideId, { expand: "objects" });
+
+    setCurrentSlide({ ...slide, objects: slide.expand!.objects || [] });
+    setSlides(project.expand!.slides);
   }
 
   return (
@@ -56,9 +67,9 @@ export default function SlideEditor( props : {
       <Toolbar
         slide={currentSlide}
         projectSlides={slides}
-        onRename={updateCurrentSlide}
+        onChange={updateCurrentSlide}
+        onRename={renameSlide}
       />
     </div>
   );
 }
-

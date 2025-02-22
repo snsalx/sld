@@ -1,7 +1,11 @@
-export default function ProjectEditor({
+import ProjectPage from "./Client";
+
+export default async function ProjectEditor({
   params,
 }: {
-  params: { projectId: string };
+  params: Promise<{ projectId: string }>;
 }) {
-  return <div>TODO slide list here</div>
+  const id = (await params).projectId;
+
+  return <ProjectPage id={id} />;
 }

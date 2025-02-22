@@ -8,17 +8,16 @@ import { usePathname } from "next/navigation";
 export default function Toolbar({
   slide,
   projectSlides,
+  onChange,
   onRename,
 }: {
-  slide: Slide,
-  projectSlides: Slide[],
-  onRename: (update: Slide) => void;
+  slide: Slide;
+  projectSlides: Slide[];
+  onChange: (update: Slide) => void;
+  onRename: (name: string) => void;
 }) {
-  const pathName = usePathname().split('/');
-  const linkUp = '/' + pathName.at(-2)!
-
-  const setName = (name: string) =>
-    onRename({ ...slide, name });
+  const pathName = usePathname().split("/");
+  const linkUp = "/" + pathName.at(-2)!;
 
   const selectedObjects = slide.objects.filter((obj) => obj.selected);
   const unselectedObjects = slide.objects.filter((obj) => !obj.selected);
@@ -30,8 +29,8 @@ export default function Toolbar({
         <input
           className="p-4 bg-transparent text-lg w-96 h-16 focus:outline-none focus:border-green border-2 border-text rounded-lg"
           placeholder="Slide title"
-          value={slide.name}
-          onChange={(event) => setName(event.target.value)}
+          defaultValue={slide.name}
+          onBlur={(event) => onRename(event.target.value)}
         />
         <Link
           href={linkUp}
@@ -50,7 +49,7 @@ export default function Toolbar({
         objects={selectedObjects}
         slideList={projectSlides}
         onUpdate={(update) =>
-          onRename({
+          onChange({
             ...slide,
             objects: [...unselectedObjects, ...update],
           })
