@@ -6,6 +6,7 @@ export default function ProfileButton() {
     <a
       className="bg-surface0 text-text hover:scale-95 transition p-4 text-lg rounded-lg h-16 w-16"
       href="/"
+      title="Home"
     >
       <HomeIcon />
     </a>

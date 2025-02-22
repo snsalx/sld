@@ -1,7 +1,7 @@
 import Select from "../../Select";
 import { Slide, SlideObject } from "../../common";
 import ProfileButton from "../../ProfileButton";
-import { PlusIcon, Square3Stack3DIcon } from "@heroicons/react/16/solid";
+import { ArrowTopRightOnSquareIcon, Bars3CenterLeftIcon, MapPinIcon, PhotoIcon, PlusIcon, Square3Stack3DIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -26,22 +26,42 @@ export default function Toolbar({
     <footer className="bg-base p-4 flex justify-between">
       <div className="flex gap-4">
         <ProfileButton />
+        <Link
+          href={linkUp}
+          className={`w-16 h-16 text-base bg-surface0 text-text hover:scale-95 transition flex justify-center items-center rounded-lg`}
+          title="All slides"
+        >
+          <Square3Stack3DIcon className="size-8" />
+        </Link>
         <input
           className="p-4 bg-transparent text-lg w-96 h-16 focus:outline-none focus:border-green border-2 border-text rounded-lg"
           placeholder="Slide title"
           defaultValue={slide.name}
           onBlur={(event) => onRename(event.target.value)}
         />
-        <Link
-          href={linkUp}
-          className={`w-16 h-16 text-base bg-blue hover:scale-95 transition flex justify-center items-center rounded-lg`}
-        >
-          <Square3Stack3DIcon className="size-8" />
-        </Link>
         <button
-          className={`w-16 h-16 text-base bg-green hover:scale-95 transition flex justify-center items-center rounded-lg`}
+          className={`w-16 h-16 text-base bg-blue hover:scale-95 transition flex justify-center items-center rounded-lg`}
+          title="Add text"
         >
-          <PlusIcon className="size-8" />
+          <Bars3CenterLeftIcon className="size-8" />
+        </button>
+        <button
+          className={`w-16 h-16 text-base bg-sapphire hover:scale-95 transition flex justify-center items-center rounded-lg`}
+          title="Add image"
+        >
+          <PhotoIcon className="size-8" />
+        </button>
+        <button
+          className={`w-16 h-16 text-base bg-sky hover:scale-95 transition flex justify-center items-center rounded-lg`}
+          title="Add button"
+        >
+          <ArrowTopRightOnSquareIcon className="size-8" />
+        </button>
+        <button
+          className={`w-16 h-16 text-base bg-teal cursor-not-allowed flex justify-center items-center rounded-lg`}
+          title="Add map (not yet implemented)"
+        >
+          <MapPinIcon className="size-8" />
         </button>
       </div>
 
