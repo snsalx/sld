@@ -23,42 +23,42 @@ export default function Toolbar({
   const unselectedObjects = slide.objects.filter((obj) => !obj.selected);
 
   return (
-    <footer className="bg-base p-4 flex justify-between">
+    <footer className="bg-mantle p-4 flex justify-between">
       <div className="flex gap-4">
         <ProfileButton />
         <Link
           href={linkUp}
-          className={`w-16 h-16 text-base bg-surface0 text-text hover:scale-95 transition flex justify-center items-center rounded-lg`}
+          className={`w-16 h-16 border-2 border-crust text-base bg-base text-text hover:scale-95 hover:border-sky transition flex justify-center items-center rounded-lg`}
           title="All slides"
         >
           <Square3Stack3DIcon className="size-8" />
         </Link>
         <input
-          className="p-4 bg-transparent text-lg w-96 h-16 focus:outline-none focus:border-green border-2 border-text rounded-lg"
+          className="p-4 bg-base text-lg w-96 h-16 focus:outline-none hover:border-sky transition border-2 border-crust rounded-lg"
           placeholder="Slide title"
           defaultValue={slide.name}
           onBlur={(event) => onRename(event.target.value)}
         />
         <button
-          className={`w-16 h-16 text-base bg-blue hover:scale-95 transition flex justify-center items-center rounded-lg`}
+          className={`w-16 h-16 border-2 border-crust text-base bg-base text-blue hover:scale-95 hover:border-sky transition flex justify-center items-center rounded-lg`}
           title="Add text"
         >
           <Bars3CenterLeftIcon className="size-8" />
         </button>
         <button
-          className={`w-16 h-16 text-base bg-sapphire hover:scale-95 transition flex justify-center items-center rounded-lg`}
+          className={`w-16 h-16 border-2 border-crust text-base bg-base text-sapphire hover:scale-95 hover:border-sky transition flex justify-center items-center rounded-lg`}
           title="Add image"
         >
           <PhotoIcon className="size-8" />
         </button>
         <button
-          className={`w-16 h-16 text-base bg-sky hover:scale-95 transition flex justify-center items-center rounded-lg`}
+          className={`w-16 h-16 border-2 border-crust text-base bg-base text-sky hover:scale-95 hover:border-sky transition flex justify-center items-center rounded-lg`}
           title="Add button"
         >
           <ArrowTopRightOnSquareIcon className="size-8" />
         </button>
         <button
-          className={`w-16 h-16 text-base bg-teal cursor-not-allowed flex justify-center items-center rounded-lg`}
+          className={`w-16 h-16 border-2 border-crust text-base bg-base text-teal cursor-not-allowed flex justify-center items-center rounded-lg`}
           title="Add map (not yet implemented)"
         >
           <MapPinIcon className="size-8" />
@@ -116,7 +116,7 @@ function ObjectProperties({
 
       {object.link?.kind === "url" && (
         <input
-          className="p-4 bg-transparent text-lg w-96 h-16 focus:outline-none focus:border-green border-2 border-text rounded-lg"
+          className="p-4 bg-base text-lg w-96 h-16 focus:outline-none transition hover:border-sky border-2 border-crust rounded-lg"
           placeholder="https://example.com"
           type="url"
           value={object.link.value}

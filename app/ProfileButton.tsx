@@ -4,7 +4,7 @@ import { useContext } from "react";
 export default function ProfileButton() {
   return (
     <a
-      className="bg-surface0 text-text hover:scale-95 transition p-4 text-lg rounded-lg h-16 w-16"
+      className="bg-base text-text hover:scale-95 hover:border-sky transition p-4 border-2 border-crust text-lg rounded-lg h-16 w-16"
       href="/"
       title="Home"
     >

@@ -9,7 +9,7 @@ export default function Select<T extends Record<string, string>>({
 }) {
   return (
     <select
-      className="bg-base text-text p-4 text-lg focus:outline-none border-2 border-text rounded-lg h-16 w-40"
+      className="bg-base text-text p-4 text-lg focus:outline-none hover:border-sky transition border-2 border-crust rounded-lg h-16 w-40"
       onChange={(event) => onChange?.(event.target.value)}
       value={value}
     >
