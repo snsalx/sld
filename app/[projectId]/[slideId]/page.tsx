@@ -1,4 +1,4 @@
-import SlideEditor from "./Client";
+import SlideEditor from "./SlideEditor";
 
 export default async function SlideEditorPage({
   params,
