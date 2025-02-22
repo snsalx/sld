@@ -2,7 +2,14 @@
 
 import { useContext, useEffect, useState } from "react";
 import Toolbar from "./Toolbar";
-import { createDemoSlide, Slide, SlideObject } from "../../common";
+import {
+  ContentButton,
+  ContentImage,
+  ContentText,
+  createDemoSlide,
+  Slide,
+  SlideObject,
+} from "../../common";
 import Canvas from "./Canvas";
 import { usePathname } from "next/navigation";
 import { BackendContext } from "@/app/Backend";
@@ -58,6 +65,33 @@ export default function SlideEditor(props: {
     setSlides(project.expand!.slides);
   }
 
+  async function createObject(
+    content: ContentImage | ContentText | ContentButton,
+  ) {
+    if (!currentSlide) return;
+
+    const request: Omit<SlideObject, "id"> = {
+      geometry: {
+        top: 2,
+        left: 2,
+        height: 32,
+        width: 32,
+      },
+      content,
+    };
+
+    const object = await backend
+      .collection("objects")
+      .create<SlideObject>(request);
+    const objects = [...currentSlide.objects, object];
+
+    await backend
+      .collection("slides")
+      .update(props.slideId, { objects: objects.map((obj) => obj.id) });
+
+    setCurrentSlide({ ...currentSlide, objects });
+  }
+
   return (
     <div className="flex h-screen flex-col overflow-hidden">
       <main className="h-full bg-base">
@@ -69,6 +103,7 @@ export default function SlideEditor(props: {
         projectSlides={slides}
         onChange={updateCurrentSlide}
         onRename={renameSlide}
+        onAddText={() => createObject({ kind: "text", body: "" })}
       />
     </div>
   );
