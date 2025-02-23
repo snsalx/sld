@@ -133,7 +133,7 @@ export function ObjectComponent(
     case "text":
       body = (
         <textarea
-          className="h-full w-full resize-none bg-transparent p-2 focus:outline-none"
+          className="h-full w-full resize-none rounded-[inherit] bg-surface1 bg-transparent p-2 focus:outline-none"
           onChange={(event) =>
             props.onUpdate({
               ...props,
@@ -148,13 +148,13 @@ export function ObjectComponent(
       body = (
         <img
           src={content.src}
-          className={`h-full w-full ${content.fit === "cover" ? "object-cover" : "object-contain"}`}
+          className={`h-full w-full rounded-[inherit] bg-surface1 ${content.fit === "cover" ? "object-cover" : "object-contain"}`}
         />
       );
       break;
     case "button":
       body = (
-        <button className="h-full w-full border-2 border-blue bg-transparent"></button>
+        <div className="h-full w-full rounded-[inherit] bg-text opacity-50" />
       );
       break;
   }
@@ -163,7 +163,7 @@ export function ObjectComponent(
     <div
       style={geometry}
       className={
-        "absolute rounded-lg border-2 bg-surface0" +
+        "absolute rounded-lg border-2" +
         (props.selected ? " border-lavender" : " border-crust")
       }
       onMouseDown={props.onClick}
@@ -172,14 +172,14 @@ export function ObjectComponent(
         <>
           <button
             onMouseDown={() => startTracking("move")}
-            className="absolute flex h-16 w-16 items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-blue hover:fill-base hover:opacity-100"
+            className="absolute flex h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-blue hover:fill-base hover:opacity-100 active:cursor-grabbing"
             style={{ top: 0, left: 0, transform: "translate(-50%, -50%)" }}
           >
             <ViewfinderCircleIcon className="size-8 rotate-45 fill-inherit text-base" />
           </button>
           <button
             onMouseDown={() => startTracking("resize")}
-            className="absolute flex h-16 w-16 items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-green hover:fill-base hover:opacity-100"
+            className="absolute flex h-16 w-16 cursor-se-resize items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-green hover:fill-base hover:opacity-100 active:cursor-grabbing"
             style={{ bottom: 0, right: 0, transform: "translate(50%, 50%)" }}
           >
             <ChevronUpDownIcon className="size-8 -rotate-45 fill-inherit text-base" />

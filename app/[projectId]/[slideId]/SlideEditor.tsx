@@ -136,6 +136,7 @@ export default function SlideEditor(props: {
 
           upload.current.click();
         }}
+        onAddButton={() => createObject({ kind: "button" })}
       />
       <input
         className="hidden"
