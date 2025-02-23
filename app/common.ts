@@ -37,7 +37,6 @@ export type ContentButton = {
 };
 export type ContentArrow = {
   kind: "arrow";
-  direction: "nw" | "ne" | "se" | "sw";
 };
 
 export type Geometry = {

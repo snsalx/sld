@@ -196,10 +196,10 @@ export function ObjectComponent(
 
           {/* A line with a marker */}
           <line
-            x1={width * 0.1}
-            y1={height * 0.1}
-            x2={width * 0.9}
-            y2={height * 0.9}
+            x1={0}
+            y1={height / 2}
+            x2={width - 10}
+            y2={height / 2}
             className="stroke-lavender stroke-[4]"
             marker-end="url(#arrow)"
           />

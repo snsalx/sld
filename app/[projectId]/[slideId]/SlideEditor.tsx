@@ -3,6 +3,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import Toolbar from "./Toolbar";
 import {
+  ContentArrow,
   ContentButton,
   ContentImage,
   ContentText,
@@ -101,7 +102,7 @@ export default function SlideEditor(props: {
   }
 
   async function createObject(
-    content: ContentImage | ContentText | ContentButton,
+    content: ContentImage | ContentText | ContentButton | ContentArrow,
     file?: File,
   ) {
     if (!currentSlide) return;
@@ -157,7 +158,7 @@ export default function SlideEditor(props: {
         }}
         onRename={renameSlide}
         onAddText={() => createObject({ kind: "text", body: "" })}
-        onAddArrow={() => createObject({ kind: "arrow", direction: "se" })}
+        onAddArrow={() => createObject({ kind: "arrow" })}
         onAddImage={() => {
           if (!upload.current) return;
 
