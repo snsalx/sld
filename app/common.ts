@@ -18,7 +18,7 @@ export type Slide = {
 export type SlideObject = {
   id: string;
   geometry: Geometry;
-  content: ContentImage | ContentText | ContentButton;
+  content: ContentImage | ContentText | ContentEmpty;
   selected?: boolean;
   link?: SlideLink;
 };
@@ -32,8 +32,8 @@ export type ContentText = {
   kind: "text";
   body: string;
 };
-export type ContentButton = {
-  kind: "button";
+export type ContentEmpty = {
+  kind: "empty";
 };
 
 export type Geometry = {
