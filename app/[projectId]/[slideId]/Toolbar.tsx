@@ -4,6 +4,7 @@ import ProfileButton from "../../ProfileButton";
 import {
   ArrowTopRightOnSquareIcon,
   Bars3CenterLeftIcon,
+  CursorArrowRaysIcon,
   MapPinIcon,
   PhotoIcon,
   PlusIcon,
@@ -16,6 +17,7 @@ import { usePathname } from "next/navigation";
 export default function Toolbar({
   slide,
   projectSlides,
+  projectId,
   onChange,
   onRename,
   onAddText,
@@ -23,6 +25,7 @@ export default function Toolbar({
 }: {
   slide: Slide;
   projectSlides: Slide[];
+  projectId: string;
   onChange: (update: Slide) => void;
   onRename: (name: string) => void;
   onAddText: () => void;
@@ -35,7 +38,7 @@ export default function Toolbar({
   const unselectedObjects = slide.objects.filter((obj) => !obj.selected);
 
   return (
-    <footer className="flex justify-between bg-mantle p-4">
+    <footer className="flex justify-between bg-mantle p-4 overflow-auto">
       <div className="flex gap-4">
         <ProfileButton />
         <Link
@@ -82,6 +85,7 @@ export default function Toolbar({
       <ObjectProperties
         objects={selectedObjects}
         slideList={projectSlides}
+        projectId={projectId}
         onUpdate={(update) =>
           onChange({
             ...slide,
@@ -99,11 +103,13 @@ export default function Toolbar({
 function ObjectProperties({
   objects,
   slideList,
+  projectId,
   onUpdate,
   onDelete,
 }: {
   objects: SlideObject[];
   slideList: Slide[];
+  projectId: string;
   onUpdate: (update: SlideObject[]) => void;
   onDelete: () => void;
 }) {
@@ -170,6 +176,20 @@ function ObjectProperties({
           value={object.link.value}
         />
       )}
+      {object.link?.kind === "slide" && 
+        <Link href={'/' + projectId + '/' + object.link.value} title="Follow link"
+        className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-green transition hover:scale-95 hover:border-sky`}
+          >
+          <CursorArrowRaysIcon className="size-8" />
+        </Link>
+      }
+      {object.link?.kind === "url" && 
+        <Link href={object.link.value} title="Follow link"
+        className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-green transition hover:scale-95 hover:border-sky`}
+          >
+          <CursorArrowRaysIcon className="size-8" />
+        </Link>
+      }
       <button
         className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-red transition hover:scale-95 hover:border-red`}
         title="Delete object"

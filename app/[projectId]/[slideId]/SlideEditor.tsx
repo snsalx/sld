@@ -127,6 +127,7 @@ export default function SlideEditor(props: {
       <Toolbar
         slide={currentSlide}
         projectSlides={slides}
+        projectId={props.projectId}
         onChange={updateCurrentSlide}
         onRename={renameSlide}
         onAddText={() => createObject({ kind: "text", body: "" })}
