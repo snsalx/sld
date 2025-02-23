@@ -124,6 +124,7 @@ export function ObjectComponent(
     `${v}%`,
   ]);
   const geometry = Object.fromEntries(geometryEntries);
+  const ref = useRef<any>(null);
 
   function startTracking(type: "move" | "resize") {
     const controller = new AbortController();
@@ -151,6 +152,7 @@ export function ObjectComponent(
     case "text":
       body = (
         <textarea
+          ref={ref}
           className="h-full w-full resize-none rounded-[inherit] bg-surface1 bg-transparent p-2 focus:outline-none"
           onChange={(event) =>
             props.onUpdate({
@@ -162,17 +164,63 @@ export function ObjectComponent(
         />
       );
       break;
+    case "arrow":
+      const { width, height } = ref.current
+        ? ref.current.getBoundingClientRect()
+        : { width: 0, height: 0 };
+
+      body = (
+        <svg
+          viewBox={"0 0 " + width + " " + height}
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-full w-full"
+          ref={ref}
+        >
+          {/* originally from MDN: https://developer.mozilla.org/en-US/docs/Web/SVG/Element/marker */}
+
+          <defs>
+            {/* A marker to be used as an arrowhead */}
+            <marker
+              id="arrow"
+              viewBox="0 0 10 10"
+              refX="5"
+              refY="5"
+              markerWidth="6"
+              markerHeight="6"
+              className="fill-lavender"
+              orient="auto-start-reverse"
+            >
+              <path d="M 0 0 L 10 5 L 0 10 z" />
+            </marker>
+          </defs>
+
+          {/* A line with a marker */}
+          <line
+            x1={width * 0.1}
+            y1={height * 0.1}
+            x2={width * 0.9}
+            y2={height * 0.9}
+            className="stroke-lavender stroke-[4]"
+            marker-end="url(#arrow)"
+          />
+        </svg>
+      );
+      break;
     case "image":
       body = (
         <img
           src={content.src}
+          ref={ref}
           className={`h-full w-full rounded-[inherit] bg-surface1 ${content.fit === "cover" ? "object-cover" : "object-contain"}`}
         />
       );
       break;
     case "button":
       body = (
-        <div className="h-full w-full rounded-[inherit] bg-text opacity-50" />
+        <div
+          ref={ref}
+          className="h-full w-full rounded-[inherit] bg-text opacity-50"
+        />
       );
       break;
   }

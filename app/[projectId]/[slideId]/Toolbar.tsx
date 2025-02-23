@@ -3,6 +3,7 @@ import { Slide, SlideObject } from "../../common";
 import ProfileButton from "../../ProfileButton";
 import {
   ArrowTopRightOnSquareIcon,
+  ArrowUpRightIcon,
   Bars3CenterLeftIcon,
   CursorArrowRaysIcon,
   MapPinIcon,
@@ -21,6 +22,7 @@ export default function Toolbar({
   onChange,
   onRename,
   onAddText,
+  onAddArrow,
   onAddImage,
   onAddButton,
 }: {
@@ -30,6 +32,7 @@ export default function Toolbar({
   onChange: (update: Slide) => void;
   onRename: (name: string) => void;
   onAddText: () => void;
+  onAddArrow: () => void;
   onAddImage: () => void;
   onAddButton: () => void;
 }) {
@@ -65,20 +68,27 @@ export default function Toolbar({
         </button>
         <button
           className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-sapphire transition hover:scale-95 hover:border-sky`}
+          title="Add arrow"
+          onClick={onAddArrow}
+        >
+          <ArrowUpRightIcon className="size-8" />
+        </button>
+        <button
+          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-sky transition hover:scale-95 hover:border-sky`}
           title="Add image"
           onClick={onAddImage}
         >
           <PhotoIcon className="size-8" />
         </button>
         <button
-          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-sky transition hover:scale-95 hover:border-sky`}
+          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-teal transition hover:scale-95 hover:border-sky`}
           title="Add button"
           onClick={onAddButton}
         >
           <ArrowTopRightOnSquareIcon className="size-8" />
         </button>
         <button
-          className={`flex h-16 w-16 cursor-not-allowed items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-teal`}
+          className={`flex h-16 w-16 cursor-not-allowed items-center justify-center rounded-lg border-2 border-crust bg-base text-green`}
           title="Add map (not yet implemented)"
         >
           <MapPinIcon className="size-8" />

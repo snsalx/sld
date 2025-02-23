@@ -18,7 +18,7 @@ export type Slide = {
 export type SlideObject = {
   id: string;
   geometry: Geometry;
-  content: ContentImage | ContentText | ContentButton;
+  content: ContentImage | ContentText | ContentButton | ContentArrow;
   selected?: boolean;
   link?: SlideLink;
 };
@@ -34,6 +34,10 @@ export type ContentText = {
 };
 export type ContentButton = {
   kind: "button";
+};
+export type ContentArrow = {
+  kind: "arrow";
+  direction: "nw" | "ne" | "se" | "sw";
 };
 
 export type Geometry = {

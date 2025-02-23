@@ -157,6 +157,7 @@ export default function SlideEditor(props: {
         }}
         onRename={renameSlide}
         onAddText={() => createObject({ kind: "text", body: "" })}
+        onAddArrow={() => createObject({ kind: "arrow", direction: "se" })}
         onAddImage={() => {
           if (!upload.current) return;
 
