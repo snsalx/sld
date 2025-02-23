@@ -151,7 +151,10 @@ export default function SlideEditor(props: {
         slide={currentSlide}
         projectSlides={slides}
         projectId={props.projectId}
-        onChange={updateCurrentSlide}
+        onChange={(slide) => {
+          updateCurrentSlide(slide);
+          sendToServer();
+        }}
         onRename={renameSlide}
         onAddText={() => createObject({ kind: "text", body: "" })}
         onAddImage={() => {
