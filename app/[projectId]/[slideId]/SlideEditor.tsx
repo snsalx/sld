@@ -3,7 +3,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import Toolbar from "./Toolbar";
 import {
-  ContentEmpty,
+  ContentButton,
   ContentImage,
   ContentText,
   createDemoSlide,
@@ -101,7 +101,7 @@ export default function SlideEditor(props: {
   }
 
   async function createObject(
-    content: ContentImage | ContentText | ContentEmpty,
+    content: ContentImage | ContentText | ContentButton,
     file?: File,
   ) {
     if (!currentSlide) return;
@@ -162,7 +162,7 @@ export default function SlideEditor(props: {
 
           upload.current.click();
         }}
-        onAddButton={() => createObject({ kind: "empty" })}
+        onAddButton={() => createObject({ kind: "button" })}
       />
       <input
         className="hidden"

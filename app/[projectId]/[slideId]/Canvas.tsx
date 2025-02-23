@@ -170,7 +170,7 @@ export function ObjectComponent(
         />
       );
       break;
-    case "empty":
+    case "button":
       body = (
         <div className="h-full w-full rounded-[inherit] bg-text opacity-50" />
       );
