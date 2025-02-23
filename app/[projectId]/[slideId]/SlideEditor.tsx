@@ -21,6 +21,8 @@ export default function SlideEditor(props: {
   const backend = useContext(BackendContext)!;
   const [slides, setSlides] = useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = useState<Slide>();
+  const [deletedObjects, setDeletedObjects] = useState<string[]>([]);
+  const [sendOnRerender, setSendOnRerender] = useState(false);
   const upload = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -37,29 +39,46 @@ export default function SlideEditor(props: {
     const deletedObjects: string[] = [];
 
     currentSlide.objects.map((object) => {
-      if (update.objects.find((potential) => potential === object)) {
-        console.log("object", object, "is unchanged, skipping");
-        return;
-      }
-
       const updatedObject = update.objects.find(
         (potential) => potential.id === object.id,
       );
-      if (updatedObject) {
-        backend.collection("objects").update(object.id, updatedObject);
-      } else {
-        backend.collection("objects").delete(object.id);
+
+      if (!updatedObject) {
         deletedObjects.push(object.id);
       }
     });
 
-    backend.collection("slides").update(props.slideId, {
+    setDeletedObjects(deletedObjects);
+    setCurrentSlide(update);
+  }
+
+  async function sendToServer() {
+    setSendOnRerender(true);
+  }
+
+  if (sendOnRerender) {
+    if (!currentSlide) return;
+
+    console.log(currentSlide);
+
+    const updatePromises = currentSlide.objects
+      .filter((object) => object.selected)
+      .map((object) => backend.collection("objects").update(object.id, object));
+
+    const deletePromises = deletedObjects.map((id) =>
+      backend.collection("objects").delete(id),
+    );
+
+    const sendListPromise = backend.collection("slides").update(props.slideId, {
       objects: currentSlide.objects
         .map((obj) => obj.id)
         .filter((obj) => !deletedObjects.includes(obj)),
     });
 
-    setCurrentSlide(update);
+    Promise.allSettled([...updatePromises, ...deletePromises, sendListPromise]);
+
+    setSendOnRerender(false);
+    setDeletedObjects([]);
   }
 
   async function renameSlide(name: string) {
@@ -121,7 +140,11 @@ export default function SlideEditor(props: {
   return (
     <div className="flex h-screen flex-col overflow-hidden">
       <main className="h-full bg-base">
-        <Canvas slide={currentSlide} setSlide={updateCurrentSlide} />
+        <Canvas
+          slide={currentSlide}
+          setSlide={updateCurrentSlide}
+          onSave={sendToServer}
+        />
       </main>
 
       <Toolbar

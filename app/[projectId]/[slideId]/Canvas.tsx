@@ -8,19 +8,26 @@ import { MouseEvent, useRef } from "react";
 export default function Canvas({
   slide,
   setSlide,
+  onSave,
 }: {
   slide: Slide;
   setSlide: (update: Slide) => void;
+  onSave: () => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
   function handleMouse(
     target: SlideObject,
-    type: "move" | "resize",
+    type: "move" | "resize" | "release",
     x: number,
     y: number,
   ) {
     if (!ref || !ref.current) {
+      return;
+    }
+
+    if (type === "release") {
+      onSave();
       return;
     }
 
@@ -103,7 +110,11 @@ function snapToGrid(coordinate: number) {
 
 export function ObjectComponent(
   props: SlideObject & {
-    onMouse: (type: "move" | "resize", x: number, y: number) => void;
+    onMouse: (
+      type: "move" | "resize" | "release",
+      x: number,
+      y: number,
+    ) => void;
     onClick?: (event: MouseEvent<HTMLDivElement>) => void;
     onUpdate: (update: SlideObject) => void;
   },
@@ -116,7 +127,14 @@ export function ObjectComponent(
 
   function startTracking(type: "move" | "resize") {
     const controller = new AbortController();
-    window.addEventListener("mouseup", () => controller.abort());
+    window.addEventListener(
+      "mouseup",
+      () => {
+        controller.abort();
+        props.onMouse("release", 0, 0);
+      },
+      { signal: controller.signal },
+    );
 
     window.addEventListener(
       "mousemove",
