@@ -1,5 +1,13 @@
 "use client";
 
+import {
+  CheckIcon,
+  FingerPrintIcon,
+  LockOpenIcon,
+  PaperAirplaneIcon,
+  UserPlusIcon,
+} from "@heroicons/react/16/solid";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import PocketBase from "pocketbase";
 import { FormEvent, useEffect } from "react";
@@ -23,29 +31,38 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-mantle">
-      <form className="grid w-80 gap-2 bg-base p-2" action={handleSubmit}>
-        <label>
-          E-mail
-          <input
-            name="email"
-            type="email"
-            className="rounded-lg bg-mantle p-2"
-          />
-        </label>
+    <div className="flex h-screen w-screen items-center justify-center">
+      <form className="flex flex-col gap-4" action={handleSubmit}>
+        <h1 className="text-center text-3xl text-blue underline">Log In</h1>
 
-        <label>
-          Password
-          <input
-            name="password"
-            type="password"
-            className="rounded-lg bg-mantle p-2"
-          />
-        </label>
+        <input
+          name="email"
+          type="email"
+          placeholder="E-Mail"
+          className="block h-16 w-96 rounded-lg border-2 border-crust bg-base bg-mantle p-4 text-lg transition hover:border-sky focus:outline-none"
+        />
 
-        <button className="rounded-lg bg-blue p-2 text-base">Log in</button>
-        <p>
-          Don't have an account? <a href="/login">Register</a>
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          className="block h-16 w-96 rounded-lg border-2 border-crust bg-base bg-mantle p-4 text-lg transition hover:border-sky focus:outline-none"
+        />
+
+        <button className="flex h-16 w-full items-center justify-center rounded-lg border-2 border-crust bg-mantle text-base text-lg text-green transition hover:scale-95 hover:border-sky">
+          Verify
+          <CheckIcon className="ml-2 size-8" />
+        </button>
+
+        <p className="group text-center text-subtext0">
+          <UserPlusIcon className="me-2 inline size-3 transition group-hover:text-peach" />
+          Don't have an account?{" "}
+          <Link
+            href="/register"
+            className="group-hover:text-peach group-hover:underline"
+          >
+            Register
+          </Link>
         </p>
       </form>
     </div>
