@@ -5,10 +5,12 @@ import { BackendContext } from "./Backend";
 import { redirect } from "next/navigation";
 import { Project } from "./common";
 import {
+  FireIcon,
   PaperAirplaneIcon,
   PlayCircleIcon,
   PlayIcon,
 } from "@heroicons/react/16/solid";
+import Link from "next/link";
 
 type ProjectSkeleton = Omit<Project, "slides">;
 
@@ -36,19 +38,30 @@ export default function Home() {
   }
 
   return (
-    <div className="flex h-screen items-center justify-center bg-mantle">
-      <div className="flex flex-col gap-2 rounded-lg bg-base p-2">
-        <h1 className="mb-4 text-center text-2xl">Projects</h1>
+    <div className="flex h-screen items-center justify-center bg-base">
+      <div className="flex flex-col gap-4 rounded-lg p-2">
+        <h1 className="text-center text-3xl text-blue underline underline-offset-2">
+          My Projects
+        </h1>
         {projects.map((project) => (
           <a
             href={"/" + project.id}
             key={project.id}
-            className="flex w-full items-center justify-between gap-2 p-2 text-xl transition hover:text-blue"
+            className="flex w-full items-center justify-between gap-2 rounded-lg border-2 border-crust bg-mantle p-4 text-xl transition hover:border-sky"
           >
             <h2>{project.name}</h2>
-            <PlayCircleIcon className="size-8" />
           </a>
         ))}
+        <p className="group text-center text-subtext0">
+          <FireIcon className="me-2 inline size-3 transition group-hover:text-peach" />
+          Powered by{" "}
+          <Link
+            href="https://snsalx.github.io/land/sld"
+            className="group-hover:text-peach group-hover:underline"
+          >
+            snsalx/SLD
+          </Link>
+        </p>
       </div>
     </div>
   );
