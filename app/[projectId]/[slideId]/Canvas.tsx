@@ -1,5 +1,5 @@
 import {
-    ArrowPathIcon,
+  ArrowPathIcon,
   ChevronUpDownIcon,
   ViewfinderCircleIcon,
 } from "@heroicons/react/16/solid";
@@ -22,6 +22,7 @@ export default function Canvas({
     type: "move" | "resize" | "rotate" | "release",
     x: number,
     y: number,
+    objectRef: any,
   ) {
     if (!ref || !ref.current) {
       return;
@@ -38,47 +39,50 @@ export default function Canvas({
     let angle = oldGeo.rotation || 0;
 
     if (type !== "rotate") {
-      const isAtTop = Number(type === "move");
-      const isAtLeft = Number(type === "move");
-      if (x < 0) x = 0;
-      if (x + (oldGeo.width / 100) * screen.width * isAtLeft > screen.width)
-        x = screen.width - (oldGeo.width / 100) * screen.width * isAtLeft;
-      if (y < 0) y = 0;
-      if (
-        y + (oldGeo.height / 100) * screen.height * isAtTop >
-        screen.height
-      )
-        y = screen.height - (oldGeo.height / 100) * screen.height * isAtTop;
+      // apply rotation
+      const realGeo = objectRef.current;
+      const initialButtonAngle = Math.atan(
+        realGeo.clientWidth / realGeo.clientHeight,
+      );
+      const radians = -angle / (180 / Math.PI) + initialButtonAngle;
+
+      const center = {
+        x: x - realGeo.clientWidth / 2,
+        y: y - realGeo.clientHeight / 2,
+      };
+      const radius =
+        Math.sqrt(realGeo.clientWidth ** 2 + realGeo.clientHeight ** 2) / 2;
+      const button = {
+        x: center.x + radius * Math.sin(radians),
+        y: center.y + radius * Math.cos(radians),
+      };
+      x = button.x;
+      y = button.y;
+
+      x = (x / screen.width) * 100;
+      y = (y / screen.height) * 100;
     } else {
-      x -= screen.width * (oldGeo.left + oldGeo.width/2) / 100;
-      y -= screen.height * (oldGeo.top + oldGeo.height/2) / 100;
+      x -= (screen.width * (oldGeo.left + oldGeo.width / 2)) / 100;
+      y -= (screen.height * (oldGeo.top + oldGeo.height / 2)) / 100;
 
-      const cornerX = screen.width * (oldGeo.left + oldGeo.width) / 100;
-      const cornerY = screen.width * oldGeo.top / 100;
+      const cornerX = (screen.width * (oldGeo.left + oldGeo.width)) / 100;
+      const cornerY = (screen.width * oldGeo.top) / 100;
 
-      const arctan = Math.floor(Math.atan(x/y) * (180 / Math.PI))
-      const corner = Math.floor(Math.atan(cornerX/cornerY) * (180 / Math.PI))
-      angle = y <= 0 ? -arctan : 180-arctan;
+      const arctan = Math.floor(Math.atan(x / y) * (180 / Math.PI));
+      const corner = Math.floor(Math.atan(cornerX / cornerY) * (180 / Math.PI));
+      angle = y <= 0 ? -arctan : 180 - arctan;
       angle -= corner;
     }
 
-    console.log(Math.tan(angle / (180 / Math.PI)))
+    console.log(Math.tan(angle / (180 / Math.PI)));
 
     const update: SlideObject = {
       ...target,
       geometry: {
-        left: snapToGrid(type === "move" ? (x / screen.width) * 100  - oldGeo.width * Math.sin(angle / (180 / Math.PI)) : oldGeo.left),
-        top: snapToGrid(type === "move" ? (y / screen.height) * 100 - oldGeo.height / 2 - 0*oldGeo.height * Math.sin(angle / (180 / Math.PI)) : oldGeo.top),
-        width: snapToGrid(
-          type === "resize"
-            ? (x / screen.width) * 100 - oldGeo.left
-            : oldGeo.width,
-        ),
-        height: snapToGrid(
-          type === "resize"
-            ? (y / screen.height) * 100 - oldGeo.top
-            : oldGeo.height,
-        ),
+        left: snapToGrid(type === "move" ? x : oldGeo.left),
+        top: snapToGrid(type === "move" ? y : oldGeo.top),
+        width: snapToGrid(type === "resize" ? x - oldGeo.left : oldGeo.width),
+        height: snapToGrid(type === "resize" ? y - oldGeo.top : oldGeo.height),
         borderRadius: oldGeo.borderRadius,
         rotation: angle,
       },
@@ -113,7 +117,7 @@ export default function Canvas({
       {slide.objects.map((object) => (
         <ObjectComponent
           {...object}
-          onMouse={(type, x, y) => handleMouse(object, type, x, y)}
+          onMouse={(type, x, y, ref) => handleMouse(object, type, x, y, ref)}
           onClick={(event) => handleClick(event, object)}
           onUpdate={handleObjectUpdate}
           key={object.id}
@@ -134,6 +138,7 @@ export function ObjectComponent(
       type: "move" | "resize" | "rotate" | "release",
       x: number,
       y: number,
+      ref: any,
     ) => void;
     onClick?: (event: MouseEvent<HTMLDivElement>) => void;
     onUpdate: (update: SlideObject) => void;
@@ -147,7 +152,8 @@ export function ObjectComponent(
   if (props.geometry.rotation) {
     geometry.transform = "rotate(" + props.geometry.rotation + "deg)";
   }
-  const ref = useRef<any>(null);
+  const contentRef = useRef<any>(null);
+  const containerRef = useRef<any>(null);
 
   function startTracking(type: "move" | "resize" | "rotate") {
     const controller = new AbortController();
@@ -155,7 +161,7 @@ export function ObjectComponent(
       "mouseup",
       () => {
         controller.abort();
-        props.onMouse("release", 0, 0);
+        props.onMouse("release", 0, 0, null);
       },
       { signal: controller.signal },
     );
@@ -163,7 +169,7 @@ export function ObjectComponent(
     window.addEventListener(
       "mousemove",
       (event) => {
-        props.onMouse(type, event.clientX, event.clientY);
+        props.onMouse(type, event.clientX, event.clientY, contentRef);
       },
       { signal: controller.signal },
     );
@@ -175,7 +181,7 @@ export function ObjectComponent(
     case "text":
       body = (
         <textarea
-          ref={ref}
+          ref={contentRef}
           className="h-full w-full resize-none rounded-[inherit] bg-surface1 bg-transparent p-2 focus:outline-none"
           onChange={(event) =>
             props.onUpdate({
@@ -188,8 +194,8 @@ export function ObjectComponent(
       );
       break;
     case "arrow":
-      const { width, height } = ref.current
-        ? ref.current.getBoundingClientRect()
+      const { width, height } = contentRef.current
+        ? contentRef.current.getBoundingClientRect()
         : { width: 0, height: 0 };
 
       body = (
@@ -197,7 +203,7 @@ export function ObjectComponent(
           viewBox={"0 0 " + width + " " + height}
           xmlns="http://www.w3.org/2000/svg"
           className="h-full w-full"
-          ref={ref}
+          ref={contentRef}
         >
           {/* originally from MDN: https://developer.mozilla.org/en-US/docs/Web/SVG/Element/marker */}
 
@@ -233,7 +239,7 @@ export function ObjectComponent(
       body = (
         <img
           src={content.src}
-          ref={ref}
+          ref={contentRef}
           className={`h-full w-full rounded-[inherit] bg-surface1 ${content.fit === "cover" ? "object-cover" : "object-contain"}`}
         />
       );
@@ -241,7 +247,7 @@ export function ObjectComponent(
     case "button":
       body = (
         <div
-          ref={ref}
+          ref={contentRef}
           className="h-full w-full rounded-[inherit] bg-text opacity-50"
         />
       );
@@ -255,6 +261,7 @@ export function ObjectComponent(
         "absolute rounded-lg border-2" +
         (props.selected ? " border-lavender" : " border-crust")
       }
+      ref={containerRef}
       onMouseDown={props.onClick}
     >
       {props.selected && (
