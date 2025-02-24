@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${font.variable} ${font.variable} latte text-text antialiased dark:mocha`}
+        className={`${font.variable} ${font.variable} latte bg-base text-text antialiased dark:mocha selection:bg-lavender selection:text-base`}
         style={{ fontFamily: "JetBrains Mono" }}
       >
         <BackendContextProvider>{children}</BackendContextProvider>

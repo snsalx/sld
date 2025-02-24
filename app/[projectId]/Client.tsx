@@ -4,7 +4,7 @@ import ProfileButton from "../ProfileButton";
 import { Project } from "../common";
 import { BackendContext } from "../Backend";
 import Link from "next/link";
-import { PlusIcon } from "@heroicons/react/16/solid";
+import { InformationCircleIcon, PlusIcon } from "@heroicons/react/16/solid";
 
 export default function ProjectPage({ id }: { id: string }) {
   const backend = useContext(BackendContext);
@@ -43,27 +43,40 @@ export default function ProjectPage({ id }: { id: string }) {
 
   return (
     <div className="flex h-screen flex-col">
-      <main className="h-full border-b-2 border-b-crust bg-base">
-        <ul className="list-disc pl-6 text-blue underline">
+      <main className="flex h-full items-center justify-center bg-base">
+        <ul className="flex w-fit flex-col gap-4 rounded-lg p-2">
+          <h1 className="text-center text-3xl text-blue underline underline-offset-2">
+            Slides
+          </h1>
           {project.slides.map((slide) => (
-            <li key={slide.id} className="hover:text-sky">
-              <a href={`/${id}/${slide.id}`}>{slide.name}</a>
+            <li key={slide.id}>
+              <Link
+                href={`/${id}/${slide.id}`}
+                className="flex w-full items-center justify-between gap-2 rounded-lg border-2 border-crust bg-mantle p-4 text-xl transition hover:border-sky"
+              >
+                {slide.name}
+              </Link>
             </li>
           ))}
+          <p className="group w-[40ch] text-center text-subtext0">
+            <InformationCircleIcon className="me-2 inline size-3" />
+            Note: this will be a hierarchical tree showing links in the next
+            version
+          </p>
         </ul>
       </main>
 
-      <footer className="flex justify-between bg-base p-4">
+      <footer className="flex justify-between bg-mantle p-4">
         <div className="flex gap-4">
           <ProfileButton />
           <input
-            className="h-16 w-96 rounded-lg border-2 border-text bg-transparent p-4 text-lg focus:border-green focus:outline-none"
+            className="h-16 w-96 rounded-lg border-2 border-crust bg-base p-4 text-lg transition hover:border-sky focus:outline-none"
             placeholder="Slide title"
             defaultValue={project.name}
             onBlur={(event) => setName(event.target.value)}
           />
           <button
-            className="flex h-16 w-16 items-center justify-center rounded-lg bg-green text-base transition hover:scale-95"
+            className="flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-blue transition hover:scale-95 hover:border-sky"
             onClick={createSlide}
           >
             <PlusIcon className="size-8" />
