@@ -37,10 +37,13 @@ export default function ProjectPage({ id }: { id: string }) {
     });
   }
 
+  async function setName(name: string) {
+    await backend!.collection("projects").update(project!.id, { name });
+  }
+
   return (
     <div className="flex h-screen flex-col">
       <main className="h-full border-b-2 border-b-crust bg-base">
-        TODO make it a tree
         <ul className="list-disc pl-6 text-blue underline">
           {project.slides.map((slide) => (
             <li key={slide.id} className="hover:text-sky">
@@ -56,8 +59,8 @@ export default function ProjectPage({ id }: { id: string }) {
           <input
             className="h-16 w-96 rounded-lg border-2 border-text bg-transparent p-4 text-lg focus:border-green focus:outline-none"
             placeholder="Slide title"
-            value={project.name}
-            // onChange={(event) => setName(event.target.value)}
+            defaultValue={project.name}
+            onBlur={(event) => setName(event.target.value)}
           />
           <button
             className="flex h-16 w-16 items-center justify-center rounded-lg bg-green text-base transition hover:scale-95"
