@@ -1,4 +1,5 @@
 import {
+    ArrowPathIcon,
   ChevronUpDownIcon,
   ViewfinderCircleIcon,
 } from "@heroicons/react/16/solid";
@@ -18,7 +19,7 @@ export default function Canvas({
 
   function handleMouse(
     target: SlideObject,
-    type: "move" | "resize" | "release",
+    type: "move" | "resize" | "rotate" | "release",
     x: number,
     y: number,
   ) {
@@ -31,36 +32,55 @@ export default function Canvas({
       return;
     }
 
-    const box = ref.current.getBoundingClientRect();
+    const screen = ref.current.getBoundingClientRect();
     const oldGeo = target.geometry;
 
-    const correctForMovement = Number(type === "move");
-    if (x < 0) x = 0;
-    if (x + (oldGeo.width / 100) * box.width * correctForMovement > box.width)
-      x = box.width - (oldGeo.width / 100) * box.width * correctForMovement;
-    if (y < 0) y = 0;
-    if (
-      y + (oldGeo.height / 100) * box.height * correctForMovement >
-      box.height
-    )
-      y = box.height - (oldGeo.height / 100) * box.height * correctForMovement;
+    let angle = oldGeo.rotation || 0;
+
+    if (type !== "rotate") {
+      const isAtTop = Number(type === "move");
+      const isAtLeft = Number(type === "move");
+      if (x < 0) x = 0;
+      if (x + (oldGeo.width / 100) * screen.width * isAtLeft > screen.width)
+        x = screen.width - (oldGeo.width / 100) * screen.width * isAtLeft;
+      if (y < 0) y = 0;
+      if (
+        y + (oldGeo.height / 100) * screen.height * isAtTop >
+        screen.height
+      )
+        y = screen.height - (oldGeo.height / 100) * screen.height * isAtTop;
+    } else {
+      x -= screen.width * (oldGeo.left + oldGeo.width/2) / 100;
+      y -= screen.height * (oldGeo.top + oldGeo.height/2) / 100;
+
+      const cornerX = screen.width * (oldGeo.left + oldGeo.width) / 100;
+      const cornerY = screen.width * oldGeo.top / 100;
+
+      const arctan = Math.floor(Math.atan(x/y) * (180 / Math.PI))
+      const corner = Math.floor(Math.atan(cornerX/cornerY) * (180 / Math.PI))
+      angle = y <= 0 ? -arctan : 180-arctan;
+      angle -= corner;
+    }
+
+    console.log(Math.tan(angle / (180 / Math.PI)))
 
     const update: SlideObject = {
       ...target,
       geometry: {
-        left: snapToGrid(type === "move" ? (x / box.width) * 100 : oldGeo.left),
-        top: snapToGrid(type === "move" ? (y / box.height) * 100 : oldGeo.top),
+        left: snapToGrid(type === "move" ? (x / screen.width) * 100  - oldGeo.width * Math.sin(angle / (180 / Math.PI)) : oldGeo.left),
+        top: snapToGrid(type === "move" ? (y / screen.height) * 100 - oldGeo.height / 2 - 0*oldGeo.height * Math.sin(angle / (180 / Math.PI)) : oldGeo.top),
         width: snapToGrid(
           type === "resize"
-            ? (x / box.width) * 100 - oldGeo.left
+            ? (x / screen.width) * 100 - oldGeo.left
             : oldGeo.width,
         ),
         height: snapToGrid(
           type === "resize"
-            ? (y / box.height) * 100 - oldGeo.top
+            ? (y / screen.height) * 100 - oldGeo.top
             : oldGeo.height,
         ),
         borderRadius: oldGeo.borderRadius,
+        rotation: angle,
       },
     };
 
@@ -111,7 +131,7 @@ function snapToGrid(coordinate: number) {
 export function ObjectComponent(
   props: SlideObject & {
     onMouse: (
-      type: "move" | "resize" | "release",
+      type: "move" | "resize" | "rotate" | "release",
       x: number,
       y: number,
     ) => void;
@@ -124,9 +144,12 @@ export function ObjectComponent(
     `${v}%`,
   ]);
   const geometry = Object.fromEntries(geometryEntries);
+  if (props.geometry.rotation) {
+    geometry.transform = "rotate(" + props.geometry.rotation + "deg)";
+  }
   const ref = useRef<any>(null);
 
-  function startTracking(type: "move" | "resize") {
+  function startTracking(type: "move" | "resize" | "rotate") {
     const controller = new AbortController();
     window.addEventListener(
       "mouseup",
@@ -201,7 +224,7 @@ export function ObjectComponent(
             x2={width - 10}
             y2={height / 2}
             className="stroke-lavender stroke-[4]"
-            marker-end="url(#arrow)"
+            markerEnd="url(#arrow)"
           />
         </svg>
       );
@@ -242,6 +265,13 @@ export function ObjectComponent(
             style={{ top: 0, left: 0, transform: "translate(-50%, -50%)" }}
           >
             <ViewfinderCircleIcon className="size-8 rotate-45 fill-inherit text-base" />
+          </button>
+          <button
+            onMouseDown={() => startTracking("rotate")}
+            className="absolute flex h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-sky hover:fill-base hover:opacity-100 active:cursor-grabbing"
+            style={{ top: 0, right: 0, transform: "translate(50%, -50%)" }}
+          >
+            <ArrowPathIcon className="size-8 fill-inherit text-base" />
           </button>
           <button
             onMouseDown={() => startTracking("resize")}

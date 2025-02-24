@@ -44,6 +44,7 @@ export type Geometry = {
   top: number;
   width: number;
   height: number;
+  rotation?: number;
   borderRadius?: number;
 };
 
