@@ -1,6 +1,6 @@
 import Select from "../../Select";
 import { Slide, SlideObject } from "../../common";
-import ProfileButton from "../../ProfileButton";
+import HomeButton from "../../ProfileButton";
 import {
   ArrowTopRightOnSquareIcon,
   ArrowUpRightIcon,
@@ -45,7 +45,7 @@ export default function Toolbar({
   return (
     <footer className="flex justify-between overflow-auto bg-mantle p-4">
       <div className="flex gap-4">
-        <ProfileButton />
+        <HomeButton />
         <Link
           href={linkUp}
           className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-text transition hover:scale-95 hover:border-sky`}

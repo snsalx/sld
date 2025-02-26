@@ -1,6 +1,6 @@
 "use client";
 import { useContext, useEffect, useState } from "react";
-import ProfileButton from "../ProfileButton";
+import HomeButton from "../ProfileButton";
 import { Project } from "../common";
 import { BackendContext } from "../Backend";
 import Link from "next/link";
@@ -70,7 +70,7 @@ export default function ProjectPage({ id }: { id: string }) {
 
       <footer className="flex justify-between bg-mantle p-4">
         <div className="flex gap-4">
-          <ProfileButton />
+          <HomeButton />
           <input
             className="h-16 w-96 rounded-lg border-2 border-crust bg-base p-4 text-lg transition hover:border-sky focus:outline-none"
             placeholder="Slide title"
