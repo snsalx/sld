@@ -1,10 +1,14 @@
 "use client";
 import { useContext, useEffect, useState } from "react";
 import HomeButton from "../ProfileButton";
-import { Project } from "../common";
+import { Project, Slide } from "../common";
 import { BackendContext } from "../Backend";
 import Link from "next/link";
-import { InformationCircleIcon, PlusIcon } from "@heroicons/react/16/solid";
+import {
+  InformationCircleIcon,
+  PlusIcon,
+  TrashIcon,
+} from "@heroicons/react/16/solid";
 
 export default function ProjectPage({ id }: { id: string }) {
   const backend = useContext(BackendContext);
@@ -14,12 +18,12 @@ export default function ProjectPage({ id }: { id: string }) {
     refetch();
   }, [id]);
 
-    async function refetch() {
-      const project = await backend!
-        .collection("projects")
-        .getOne<Project & { expand: any }>(id, { expand: "slides" });
-      setProject({ ...project, slides: project.expand!.slides });
-    }
+  async function refetch() {
+    const project = await backend!
+      .collection("projects")
+      .getOne<Project & { expand: any }>(id, { expand: "slides" });
+    setProject({ ...project, slides: project.expand!.slides });
+  }
 
   if (!project) {
     return <div>Loading...</div>;
@@ -43,6 +47,17 @@ export default function ProjectPage({ id }: { id: string }) {
     await backend!.collection("projects").update(project!.id, { name });
   }
 
+  async function handleDelete(slide: Slide) {
+    if (!confirm("Delete " + slide.name + "?")) return;
+
+    const slides = project?.slides
+      .map((slide) => slide.id)
+      .filter((id) => id !== slide.id);
+
+    await backend!.collection("projects").update(project!.id, { slides });
+    await refetch();
+  }
+
   return (
     <div className="flex h-screen flex-col">
       <main className="flex h-full items-center justify-center bg-base">
@@ -51,13 +66,20 @@ export default function ProjectPage({ id }: { id: string }) {
             Slides
           </h1>
           {project.slides.map((slide) => (
-            <li key={slide.id}>
+            <li key={slide.id} className="flex gap-4">
               <Link
                 href={`/${id}/${slide.id}`}
                 className="flex w-full items-center justify-between gap-2 rounded-lg border-2 border-crust bg-mantle p-4 text-xl transition hover:scale-[98%] hover:border-sky"
               >
                 {slide.name}
               </Link>
+              <button
+                className={`flex h-16 w-16 min-w-16 items-center justify-center rounded-lg border-2 border-crust bg-mantle text-base text-red transition hover:scale-95 hover:border-red`}
+                title="Delete slide"
+                onClick={() => handleDelete(slide)}
+              >
+                <TrashIcon className="size-8" />
+              </button>
             </li>
           ))}
           <p className="group w-[40ch] text-center text-subtext0">
