@@ -11,15 +11,15 @@ export default function ProjectPage({ id }: { id: string }) {
   const [project, setProject] = useState<Project | undefined>();
 
   useEffect(() => {
-    fetchData();
+    refetch();
+  }, [id]);
 
-    async function fetchData() {
+    async function refetch() {
       const project = await backend!
         .collection("projects")
         .getOne<Project & { expand: any }>(id, { expand: "slides" });
       setProject({ ...project, slides: project.expand!.slides });
     }
-  }, [id]);
 
   if (!project) {
     return <div>Loading...</div>;
@@ -35,6 +35,8 @@ export default function ProjectPage({ id }: { id: string }) {
     await backend!.collection("projects").update(project!.id, {
       slides: [...project!.slides.map((slide) => slide.id), slide.id],
     });
+
+    await refetch();
   }
 
   async function setName(name: string) {
