@@ -52,7 +52,7 @@ export default function ProjectPage({ id }: { id: string }) {
             <li key={slide.id}>
               <Link
                 href={`/${id}/${slide.id}`}
-                className="flex w-full items-center justify-between gap-2 rounded-lg border-2 border-crust bg-mantle p-4 text-xl transition hover:border-sky"
+                className="flex w-full items-center justify-between gap-2 rounded-lg border-2 border-crust bg-mantle p-4 text-xl transition hover:scale-[98%] hover:border-sky"
               >
                 {slide.name}
               </Link>

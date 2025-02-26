@@ -182,7 +182,7 @@ export function ObjectComponent(
       body = (
         <textarea
           ref={contentRef}
-          className="h-full w-full resize-none rounded-[inherit] bg-surface1 bg-transparent p-2 focus:outline-none"
+          className="h-full w-full resize-none rounded-[inherit] bg-surface1 p-2 focus:outline-none"
           onChange={(event) =>
             props.onUpdate({
               ...props,

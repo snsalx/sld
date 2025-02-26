@@ -47,7 +47,7 @@ export default function Home() {
           <a
             href={"/" + project.id}
             key={project.id}
-            className="flex w-full items-center justify-between gap-2 rounded-lg border-2 border-crust bg-mantle p-4 text-xl transition hover:border-sky"
+            className="flex w-full items-center justify-between gap-2 rounded-lg border-2 border-crust bg-mantle p-4 text-xl transition hover:scale-[98%] hover:border-sky"
           >
             <h2>{project.name}</h2>
           </a>
