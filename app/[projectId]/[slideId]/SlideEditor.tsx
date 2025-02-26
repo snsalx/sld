@@ -12,8 +12,8 @@ import {
   SlideObject,
 } from "../../common";
 import Canvas from "./Canvas";
-import { usePathname } from "next/navigation";
-import { BackendContext } from "@/app/Backend";
+import { redirect, usePathname } from "next/navigation";
+import { BackendContext, handleBackendError } from "@/app/Backend";
 
 export default function SlideEditor(props: {
   projectId: string;
@@ -90,12 +90,14 @@ export default function SlideEditor(props: {
   async function refetch() {
     const project = await backend
       .collection("projects")
-      .getOne(props.projectId, { expand: "slides" });
+      .getOne(props.projectId, { expand: "slides" })
+      .catch(handleBackendError);
     const slide = await backend
       .collection("slides")
       .getOne<
         Omit<Slide, "objects"> & { expand: any }
-      >(props.slideId, { expand: "objects" });
+      >(props.slideId, { expand: "objects" })
+      .catch(handleBackendError);
 
     setCurrentSlide({ ...slide, objects: slide.expand!.objects || [] });
     setSlides(project.expand!.slides);

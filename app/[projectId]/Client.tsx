@@ -2,13 +2,14 @@
 import { useContext, useEffect, useState } from "react";
 import HomeButton from "../ProfileButton";
 import { Project, Slide } from "../common";
-import { BackendContext } from "../Backend";
+import { BackendContext, handleBackendError } from "../Backend";
 import Link from "next/link";
 import {
   InformationCircleIcon,
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/16/solid";
+import { redirect } from "next/navigation";
 
 export default function ProjectPage({ id }: { id: string }) {
   const backend = useContext(BackendContext);
@@ -21,7 +22,8 @@ export default function ProjectPage({ id }: { id: string }) {
   async function refetch() {
     const project = await backend!
       .collection("projects")
-      .getOne<Project & { expand: any }>(id, { expand: "slides" });
+      .getOne<Project & { expand: any }>(id, { expand: "slides" })
+      .catch(handleBackendError);
     setProject({ ...project, slides: project.expand!.slides });
   }
 
