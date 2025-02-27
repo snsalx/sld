@@ -130,6 +130,7 @@ export default function SlideEditor(props: {
         object.id +
         "/" +
         (object as any).image;
+      await backend.collection("objects").update(object.id, object);
     }
     const objects = [...currentSlide.objects, object];
 
