@@ -84,6 +84,13 @@ export default function ProjectPage({ id }: { id: string }) {
               </button>
             </li>
           ))}
+          <button
+            className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-crust bg-mantle p-4 text-xl text-green transition hover:scale-[98%] hover:border-sky"
+            onClick={createSlide}
+          >
+            Create
+            <PlusIcon className="size-8" />
+          </button>
           <p className="group w-[40ch] text-center text-subtext0">
             <InformationCircleIcon className="me-2 inline size-3" />
             Note: this will be a hierarchical tree showing links in the next
@@ -101,12 +108,6 @@ export default function ProjectPage({ id }: { id: string }) {
             defaultValue={project.name}
             onBlur={(event) => setName(event.target.value)}
           />
-          <button
-            className="flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-blue transition hover:scale-95 hover:border-sky"
-            onClick={createSlide}
-          >
-            <PlusIcon className="size-8" />
-          </button>
         </div>
       </footer>
     </div>
