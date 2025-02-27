@@ -56,7 +56,7 @@ export default function LoginPage() {
 
         <p className="group text-center text-subtext0">
           <UserPlusIcon className="me-2 inline size-3 transition group-hover:text-peach" />
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link
             href="/register"
             className="group-hover:text-peach group-hover:underline"
