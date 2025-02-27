@@ -17,7 +17,11 @@ export default function BackendContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const pb = new PocketBase("http://localhost:8090");
+  const url =
+    typeof window === "undefined"
+      ? "running on the server"
+      : window.location.protocol + "//" + window.location.hostname + ":8090";
+  const pb = new PocketBase(url);
 
   return (
     <BackendContext.Provider value={pb}>{children}</BackendContext.Provider>

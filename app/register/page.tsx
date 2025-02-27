@@ -4,10 +4,11 @@ import { CheckIcon, UserCircleIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import PocketBase from "pocketbase";
-import { FormEvent, useEffect } from "react";
+import { FormEvent, useContext, useEffect } from "react";
+import { BackendContext } from "../Backend";
 
 export default function RegisterPage() {
-  const pb = new PocketBase("http://localhost:8090");
+  const pb = useContext(BackendContext)!;
 
   useEffect(() => {
     if (pb.authStore.isValid) {

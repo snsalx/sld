@@ -33,7 +33,7 @@ export default function Home() {
     return <h1>Something went extremely wrong</h1>;
   }
 
-  if (!backend.authStore.isValid) {
+  if (typeof window !== "undefined" && !backend.authStore.isValid) {
     console.log("invalid auth", backend.authStore);
     redirect("/login");
   }
