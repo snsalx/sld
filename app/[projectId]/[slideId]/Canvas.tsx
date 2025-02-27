@@ -110,6 +110,7 @@ export default function Canvas({
   function handleObjectUpdate(target: SlideObject) {
     const rest = slide.objects.filter((obj) => obj.id !== target.id);
     setSlide({ ...slide, objects: [...rest, target] });
+    onSave();
   }
 
   return (
