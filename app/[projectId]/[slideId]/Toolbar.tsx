@@ -67,7 +67,7 @@ export default function Toolbar({
           <Bars3CenterLeftIcon className="size-8" />
         </button>
         <button
-          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-sapphire transition hover:scale-95 hover:border-sky`}
+          className={`flex hidden h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-sapphire transition hover:scale-95 hover:border-sky`}
           title="Add arrow"
           onClick={onAddArrow}
         >
@@ -88,7 +88,7 @@ export default function Toolbar({
           <ArrowTopRightOnSquareIcon className="size-8" />
         </button>
         <button
-          className={`flex h-16 w-16 cursor-not-allowed items-center justify-center rounded-lg border-2 border-crust bg-base text-green`}
+          className={`flex hidden h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-green transition hover:scale-95 hover:border-sky`}
           title="Add map (not yet implemented)"
         >
           <MapPinIcon className="size-8" />

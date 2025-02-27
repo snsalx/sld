@@ -25,7 +25,10 @@ export default function LoginPage() {
   async function handleSubmit(formData: FormData) {
     const data: any = Object.fromEntries(formData.entries());
 
-    await pb.collection("users").authWithPassword(data.email, data.password);
+    await pb
+      .collection("users")
+      .authWithPassword(data.email, data.password)
+      .catch(() => alert("E-Mail or password incorrect. Did you register?"));
     redirect("/");
 
     // TODO add error handling

@@ -276,7 +276,7 @@ export function ObjectComponent(
           </button>
           <button
             onMouseDown={() => startTracking("rotate")}
-            className="absolute flex h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-sky hover:fill-base hover:opacity-100 active:cursor-grabbing"
+            className="absolute flex hidden h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-sky hover:fill-base hover:opacity-100 active:cursor-grabbing"
             style={{ top: 0, right: 0, transform: "translate(50%, -50%)" }}
           >
             <ArrowPathIcon className="size-8 fill-inherit text-base" />
