@@ -42,7 +42,7 @@ export default function ProjectPage({ id }: { id: string }) {
       slides: [...project!.slides.map((slide) => slide.id), slide.id],
     });
 
-    await refetch();
+    redirect("/" + id + "/" + slide.id)
   }
 
   async function setName(name: string) {
