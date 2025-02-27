@@ -9,6 +9,7 @@ import {
   PaperAirplaneIcon,
   PlayCircleIcon,
   PlayIcon,
+  PlusIcon,
 } from "@heroicons/react/16/solid";
 import Link from "next/link";
 
@@ -37,6 +38,26 @@ export default function Home() {
     redirect("/login");
   }
 
+  async function handleCreate() {
+    const name = prompt("Name the new project", "Untitled");
+    const slideName = prompt("Name the first slide", "Untitled");
+    if (!name) return;
+
+    const project = await backend!
+      .collection("projects")
+      .create({ name, slides: [], author: backend?.authStore.record!.id });
+
+    const slide = await backend!
+      .collection("slides")
+      .create({ name: slideName, objects: [] });
+
+    await backend!.collection("projects").update(project.id, {
+      slides: [slide.id],
+    });
+
+    redirect("/" + project.id + "/" + slide.id);
+  }
+
   return (
     <div className="flex h-screen items-center justify-center bg-base">
       <div className="flex flex-col gap-4 rounded-lg p-2">
@@ -52,6 +73,13 @@ export default function Home() {
             <h2>{project.name}</h2>
           </a>
         ))}
+        <button
+          className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-crust bg-mantle p-4 text-xl text-green transition hover:scale-[98%] hover:border-sky"
+          onClick={handleCreate}
+        >
+          Create
+          <PlusIcon className="size-8" />
+        </button>
         <p className="group text-center text-subtext0">
           <FireIcon className="me-2 inline size-3 transition group-hover:text-peach" />
           Powered by{" "}

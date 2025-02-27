@@ -24,7 +24,7 @@ export default function ProjectPage({ id }: { id: string }) {
       .collection("projects")
       .getOne<Project & { expand: any }>(id, { expand: "slides" })
       .catch(handleBackendError);
-    setProject({ ...project, slides: project.expand!.slides });
+    setProject({ ...project, slides: project.expand!.slides || [] });
   }
 
   if (!project) {
@@ -42,7 +42,7 @@ export default function ProjectPage({ id }: { id: string }) {
       slides: [...project!.slides.map((slide) => slide.id), slide.id],
     });
 
-    redirect("/" + id + "/" + slide.id)
+    redirect("/" + id + "/" + slide.id);
   }
 
   async function setName(name: string) {
