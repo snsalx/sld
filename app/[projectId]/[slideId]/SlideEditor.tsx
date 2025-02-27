@@ -170,6 +170,7 @@ export default function SlideEditor(props: {
       />
       <input
         className="hidden"
+        accept="image/png,image/jpeg,image/svg+xml"
         type="file"
         ref={upload}
         onChange={(event) => {
