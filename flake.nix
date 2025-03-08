@@ -13,7 +13,7 @@
           nodePackages.typescript-language-server
           pocketbase
           (pkgs.writeShellScriptBin "run" ''
-            npm run dev&
+            BACKEND_URL=http://localhost:8090 npm run dev&
             pocketbase serve
           '')
         ];
