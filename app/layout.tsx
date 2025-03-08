@@ -3,6 +3,7 @@ import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import BackendContextProvider, { BackendContext } from "./Backend";
 import { ExclamationTriangleIcon } from "@heroicons/react/16/solid";
+import { unstable_noStore } from "next/cache";
 
 const font = JetBrains_Mono({
   variable: "--font-geist-sans",
@@ -19,6 +20,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  unstable_noStore();
   const backendUrl = process.env.BACKEND_URL || "";
 
   if (!backendUrl) {
