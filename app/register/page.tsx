@@ -16,23 +16,44 @@ export default function RegisterPage() {
     }
   }, []);
 
-  async function handleSubmit(formData: FormData) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const formData = new FormData(event.currentTarget);
     const data: any = {
       ...Object.fromEntries(formData.entries()),
       emailVisibility: false,
       verified: false,
     };
 
-    await pb.collection("users").create(data);
-    await pb.collection("users").authWithPassword(data.email, data.password);
-    redirect("/");
+    if (data.password !== data.passwordConfirm) {
+      alert("Passwords don't match");
 
-    // TODO add error handling
+      return;
+    }
+
+    reg();
+
+    async function reg() {
+      await pb
+        .collection("users")
+        .create(data)
+        .catch(() => alert("User already exists, attempting to log in"));
+      await pb
+        .collection("users")
+        .authWithPassword(data.email, data.password)
+        .catch((e) => {
+          alert("Failed to log in, please try again");
+          throw new Error(e);
+        });
+      redirect("/");
+    }
   }
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
-      <form className="flex flex-col gap-4" action={handleSubmit}>
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <h1 className="text-center text-3xl text-blue underline">Register</h1>
 
         <input
@@ -68,13 +89,13 @@ export default function RegisterPage() {
         </button>
 
         <p className="group text-center text-subtext0">
-          <UserCircleIcon className="me-2 inline size-3 transition group-hover:text-sky" />
           Already have an account?{" "}
           <Link
             href="/login"
             className="group-hover:text-sky group-hover:underline"
           >
             Log In
+          <UserCircleIcon className="ml-2 inline size-3 transition group-hover:text-sky" />
           </Link>
         </p>
       </form>
