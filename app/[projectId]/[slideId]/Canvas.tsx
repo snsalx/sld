@@ -128,7 +128,7 @@ export default function Canvas({
   );
 }
 
-const gridCellInPercent = 2; // lower number means finer grid
+const gridCellInPercent = 4; // lower number means finer grid
 function snapToGrid(coordinate: number) {
   return Math.floor(coordinate / gridCellInPercent) * gridCellInPercent;
 }

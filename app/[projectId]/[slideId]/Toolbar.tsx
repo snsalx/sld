@@ -43,7 +43,7 @@ export default function Toolbar({
   const unselectedObjects = slide.objects.filter((obj) => !obj.selected);
 
   return (
-    <footer className="flex justify-between overflow-auto bg-mantle p-4">
+    <footer className="flex justify-between gap-4 overflow-auto bg-mantle p-4">
       <div className="flex gap-4">
         <HomeButton />
         <Link
