@@ -132,7 +132,11 @@ export default function SlideEditor(props: {
         (object as any).image;
       await backend.collection("objects").update(object.id, object);
     }
-    const objects = [...currentSlide.objects, object];
+    object.selected = true;
+    const objects = [
+      ...currentSlide.objects.map((obj) => ({ ...obj, selected: false })),
+      object,
+    ];
 
     await backend
       .collection("slides")
