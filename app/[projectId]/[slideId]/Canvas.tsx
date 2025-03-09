@@ -128,7 +128,7 @@ export default function Canvas({
   );
 }
 
-const gridCellInPercent = 4; // lower number means finer grid
+const gridCellInPercent = 2; // lower number means finer grid
 function snapToGrid(coordinate: number) {
   return Math.floor(coordinate / gridCellInPercent) * gridCellInPercent;
 }
@@ -286,7 +286,7 @@ export function ObjectComponent(
           <button
             onMouseDown={() => startTracking("move")}
             onTouchStart={() => startTracking("move")}
-            className="absolute flex h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-blue hover:fill-base hover:opacity-100 active:cursor-grabbing active:bg-blue active:fill-base active:opacity-100"
+            className="absolute z-50 flex h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-blue hover:fill-base hover:opacity-100 active:cursor-grabbing active:bg-blue active:fill-base active:opacity-100"
             style={{ top: 0, left: 0, transform: "translate(-50%, -50%)" }}
           >
             <ViewfinderCircleIcon className="size-8 rotate-45 fill-inherit text-base" />
@@ -294,7 +294,7 @@ export function ObjectComponent(
           <button
             onMouseDown={() => startTracking("rotate")}
             onTouchStart={() => startTracking("rotate")}
-            className="absolute flex hidden h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-sky hover:fill-base hover:opacity-100 active:cursor-grabbing active:bg-sky active:fill-base active:opacity-100"
+            className="absolute z-50 flex hidden h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-sky hover:fill-base hover:opacity-100 active:cursor-grabbing active:bg-sky active:fill-base active:opacity-100"
             style={{ top: 0, right: 0, transform: "translate(50%, -50%)" }}
           >
             <ArrowPathIcon className="size-8 fill-inherit text-base" />
@@ -302,7 +302,7 @@ export function ObjectComponent(
           <button
             onMouseDown={() => startTracking("resize")}
             onTouchStart={() => startTracking("resize")}
-            className="absolute flex h-16 w-16 cursor-se-resize items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-green hover:fill-base hover:opacity-100 active:cursor-grabbing active:bg-green active:fill-base active:opacity-100"
+            className="absolute z-50 flex h-16 w-16 cursor-se-resize items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-green hover:fill-base hover:opacity-100 active:cursor-grabbing active:bg-green active:fill-base active:opacity-100"
             style={{ bottom: 0, right: 0, transform: "translate(50%, 50%)" }}
           >
             <ChevronUpDownIcon className="size-8 -rotate-45 fill-inherit text-base" />

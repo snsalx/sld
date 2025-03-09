@@ -43,72 +43,74 @@ export default function Toolbar({
   const unselectedObjects = slide.objects.filter((obj) => !obj.selected);
 
   return (
-    <footer className="flex justify-between gap-4 overflow-auto bg-mantle p-4">
-      <div className="flex gap-4">
-        <HomeButton />
-        <Link
-          href={linkUp}
-          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-text transition hover:scale-95 hover:border-sky`}
-          title="All slides"
-        >
-          <Square3Stack3DIcon className="size-8" />
-        </Link>
-        <input
-          className="h-16 w-96 rounded-lg border-2 border-crust bg-base p-4 text-lg transition hover:border-sky focus:outline-none"
-          placeholder="Slide title"
-          defaultValue={slide.name}
-          onBlur={(event) => onRename(event.target.value)}
-        />
-        <button
-          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-blue transition hover:scale-95 hover:border-sky`}
-          title="Add text"
-          onClick={onAddText}
-        >
-          <Bars3CenterLeftIcon className="size-8" />
-        </button>
-        <button
-          className={`flex hidden h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-sapphire transition hover:scale-95 hover:border-sky`}
-          title="Add arrow"
-          onClick={onAddArrow}
-        >
-          <ArrowUpRightIcon className="size-8" />
-        </button>
-        <button
-          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-sky transition hover:scale-95 hover:border-sky`}
-          title="Add image"
-          onClick={onAddImage}
-        >
-          <PhotoIcon className="size-8" />
-        </button>
-        <button
-          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-teal transition hover:scale-95 hover:border-sky`}
-          title="Add button"
-          onClick={onAddButton}
-        >
-          <ArrowTopRightOnSquareIcon className="size-8" />
-        </button>
-        <button
-          className={`flex hidden h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-green transition hover:scale-95 hover:border-sky`}
-          title="Add map (not yet implemented)"
-        >
-          <MapPinIcon className="size-8" />
-        </button>
-      </div>
+    <footer className="z-40">
+      <div className="flex justify-between gap-4 overflow-auto bg-mantle p-4">
+        <div className="flex gap-4">
+          <HomeButton />
+          <Link
+            href={linkUp}
+            className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-text transition hover:scale-95 hover:border-sky`}
+            title="All slides"
+          >
+            <Square3Stack3DIcon className="size-8" />
+          </Link>
+          <input
+            className="h-16 w-96 rounded-lg border-2 border-crust bg-base p-4 text-lg transition hover:border-sky focus:outline-none"
+            placeholder="Slide title"
+            defaultValue={slide.name}
+            onBlur={(event) => onRename(event.target.value)}
+          />
+          <button
+            className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-blue transition hover:scale-95 hover:border-sky`}
+            title="Add text"
+            onClick={onAddText}
+          >
+            <Bars3CenterLeftIcon className="size-8" />
+          </button>
+          <button
+            className={`flex hidden h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-sapphire transition hover:scale-95 hover:border-sky`}
+            title="Add arrow"
+            onClick={onAddArrow}
+          >
+            <ArrowUpRightIcon className="size-8" />
+          </button>
+          <button
+            className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-sky transition hover:scale-95 hover:border-sky`}
+            title="Add image"
+            onClick={onAddImage}
+          >
+            <PhotoIcon className="size-8" />
+          </button>
+          <button
+            className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-teal transition hover:scale-95 hover:border-sky`}
+            title="Add button"
+            onClick={onAddButton}
+          >
+            <ArrowTopRightOnSquareIcon className="size-8" />
+          </button>
+          <button
+            className={`flex hidden h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-green transition hover:scale-95 hover:border-sky`}
+            title="Add map (not yet implemented)"
+          >
+            <MapPinIcon className="size-8" />
+          </button>
+        </div>
 
-      <ObjectProperties
-        objects={selectedObjects}
-        slideList={projectSlides}
-        projectId={projectId}
-        onUpdate={(update) =>
-          onChange({
-            ...slide,
-            objects: [...unselectedObjects, ...update],
-          })
-        }
-        onDelete={() => {
-          onChange({ ...slide, objects: unselectedObjects });
-        }}
-      />
+        <ObjectProperties
+          objects={selectedObjects}
+          slideList={projectSlides}
+          projectId={projectId}
+          onUpdate={(update) =>
+            onChange({
+              ...slide,
+              objects: [...unselectedObjects, ...update],
+            })
+          }
+          onDelete={() => {
+            onChange({ ...slide, objects: unselectedObjects });
+          }}
+        />
+      </div>
     </footer>
   );
 }
