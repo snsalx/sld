@@ -181,6 +181,8 @@ export default function SlideEditor(props: {
         onChange={(event) => {
           if (!event.target.files) return;
 
+          if (!event.target.files[0]) return;
+
           createObject(
             { kind: "image", src: "", fit: "cover" },
             event.target.files[0],
