@@ -84,10 +84,10 @@ export default function Home() {
           <FireIcon className="me-2 inline size-3 transition group-hover:text-peach" />
           Powered by{" "}
           <Link
-            href="https://snsalx.github.io/land/sld"
+            href="/about"
             className="group-hover:text-peach group-hover:underline"
           >
-            snsalx/SLD
+            sld v0.1.1
           </Link>
         </p>
       </div>
