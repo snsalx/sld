@@ -7,12 +7,10 @@ import {
   ContentButton,
   ContentImage,
   ContentText,
-  createDemoSlide,
   Slide,
   SlideObject,
 } from "../../common";
 import Canvas from "./Canvas";
-import { redirect, usePathname } from "next/navigation";
 import { BackendContext, handleBackendError } from "@/app/Backend";
 
 export default function SlideEditor(props: {

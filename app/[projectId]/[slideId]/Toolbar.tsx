@@ -8,7 +8,6 @@ import {
   CursorArrowRaysIcon,
   MapPinIcon,
   PhotoIcon,
-  PlusIcon,
   Square3Stack3DIcon,
   TrashIcon,
 } from "@heroicons/react/16/solid";
@@ -134,20 +133,24 @@ function ObjectProperties({
 
   const object = objects[0];
 
+  console.log(object.link);
+
   return (
     <div className="flex gap-4">
       <Select
         options={{ none: "No link", slide: "Slide", url: "URL" }}
         value={object.link?.kind || "none"}
-        onChange={(value) => {
+        onChange={(kind) => {
+          const defaultValue = kind === "slide" ? slideList[0].id : "";
+
           onUpdate(
             objects.map(
               (object): SlideObject => ({
                 ...object,
                 link:
-                  value === "none"
+                  kind === "none"
                     ? undefined
-                    : { kind: value, value: object.link?.value || "" },
+                    : { kind: kind, value: object.link?.value || defaultValue },
               }),
             ),
           );
