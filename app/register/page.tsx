@@ -95,7 +95,7 @@ export default function RegisterPage() {
             className="group-hover:text-sky group-hover:underline"
           >
             Log In
-          <UserCircleIcon className="ml-2 inline size-3 transition group-hover:text-sky" />
+            <UserCircleIcon className="ml-2 inline size-3 transition group-hover:text-sky" />
           </Link>
         </p>
       </form>
