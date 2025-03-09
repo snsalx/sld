@@ -159,6 +159,14 @@ export function ObjectComponent(
   function startTracking(type: "move" | "resize" | "rotate") {
     const controller = new AbortController();
     window.addEventListener(
+      "touchend",
+      () => {
+        controller.abort();
+        props.onMouse("release", 0, 0, null);
+      },
+      { signal: controller.signal },
+    );
+    window.addEventListener(
       "mouseup",
       () => {
         controller.abort();
@@ -167,6 +175,14 @@ export function ObjectComponent(
       { signal: controller.signal },
     );
 
+    window.addEventListener(
+      "touchmove",
+      (event) => {
+        const touch = event.touches[0];
+        props.onMouse(type, touch.clientX, touch.clientY, contentRef);
+      },
+      { signal: controller.signal },
+    );
     window.addEventListener(
       "mousemove",
       (event) => {
@@ -269,21 +285,24 @@ export function ObjectComponent(
         <>
           <button
             onMouseDown={() => startTracking("move")}
-            className="absolute flex h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-blue hover:fill-base hover:opacity-100 active:cursor-grabbing"
+            onTouchStart={() => startTracking("move")}
+            className="absolute flex h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-blue hover:fill-base hover:opacity-100 active:cursor-grabbing active:bg-blue active:fill-base active:opacity-100"
             style={{ top: 0, left: 0, transform: "translate(-50%, -50%)" }}
           >
             <ViewfinderCircleIcon className="size-8 rotate-45 fill-inherit text-base" />
           </button>
           <button
             onMouseDown={() => startTracking("rotate")}
-            className="absolute flex hidden h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-sky hover:fill-base hover:opacity-100 active:cursor-grabbing"
+            onTouchStart={() => startTracking("rotate")}
+            className="absolute flex hidden h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-sky hover:fill-base hover:opacity-100 active:cursor-grabbing active:bg-sky active:fill-base active:opacity-100"
             style={{ top: 0, right: 0, transform: "translate(50%, -50%)" }}
           >
             <ArrowPathIcon className="size-8 fill-inherit text-base" />
           </button>
           <button
             onMouseDown={() => startTracking("resize")}
-            className="absolute flex h-16 w-16 cursor-se-resize items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-green hover:fill-base hover:opacity-100 active:cursor-grabbing"
+            onTouchStart={() => startTracking("resize")}
+            className="absolute flex h-16 w-16 cursor-se-resize items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-green hover:fill-base hover:opacity-100 active:cursor-grabbing active:bg-green active:fill-base active:opacity-100"
             style={{ bottom: 0, right: 0, transform: "translate(50%, 50%)" }}
           >
             <ChevronUpDownIcon className="size-8 -rotate-45 fill-inherit text-base" />
