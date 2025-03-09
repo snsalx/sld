@@ -4,7 +4,7 @@ import {
   ViewfinderCircleIcon,
 } from "@heroicons/react/16/solid";
 import { Slide, SlideObject } from "../../common";
-import { MouseEvent, useRef } from "react";
+import { MouseEvent, useEffect, useRef } from "react";
 
 export default function Canvas({
   slide,
@@ -156,6 +156,12 @@ export function ObjectComponent(
   const contentRef = useRef<any>(null);
   const containerRef = useRef<any>(null);
 
+  useEffect(() => {
+    if (props.selected) {
+      contentRef?.current?.focus();
+    }
+  }, [contentRef]);
+
   function startTracking(type: "move" | "resize" | "rotate") {
     const controller = new AbortController();
     window.addEventListener(
@@ -171,6 +177,7 @@ export function ObjectComponent(
       () => {
         controller.abort();
         props.onMouse("release", 0, 0, null);
+        contentRef?.current?.focus();
       },
       { signal: controller.signal },
     );
