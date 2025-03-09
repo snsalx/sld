@@ -39,7 +39,10 @@ export default function RegisterPage() {
       await pb
         .collection("users")
         .create(data)
-        .catch(() => alert("User already exists, attempting to log in"));
+        .catch((e) => {
+          alert("User already exists");
+          throw new Error(e);
+        });
       await pb
         .collection("users")
         .authWithPassword(data.email, data.password)
@@ -47,7 +50,24 @@ export default function RegisterPage() {
           alert("Failed to log in, please try again");
           throw new Error(e);
         });
-      redirect("/");
+
+      const project = await pb
+        .collection("projects")
+        .create({
+          name: "My First Project",
+          slides: [],
+          author: pb?.authStore.record!.id,
+        });
+
+      const slide = await pb
+        .collection("slides")
+        .create({ name: "Slide 1", objects: [] });
+
+      await pb!.collection("projects").update(project.id, {
+        slides: [slide.id],
+      });
+
+      redirect("/" + project.id + "/" + slide.id);
     }
   }
 
