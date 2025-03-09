@@ -51,13 +51,11 @@ export default function RegisterPage() {
           throw new Error(e);
         });
 
-      const project = await pb
-        .collection("projects")
-        .create({
-          name: "My First Project",
-          slides: [],
-          author: pb?.authStore.record!.id,
-        });
+      const project = await pb.collection("projects").create({
+        name: "My First Project",
+        slides: [],
+        author: pb?.authStore.record!.id,
+      });
 
       const slide = await pb
         .collection("slides")
