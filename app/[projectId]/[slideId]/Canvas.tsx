@@ -264,7 +264,7 @@ export function ObjectComponent(
         <img
           src={content.src}
           ref={contentRef}
-          className={`h-full w-full rounded-[inherit] bg-surface1 ${content.fit === "cover" ? "object-cover" : "object-contain"}`}
+          className={`h-full w-full select-none rounded-[inherit] bg-surface1 ${content.fit === "cover" ? "object-cover" : "object-contain"}`}
         />
       );
       break;
@@ -272,7 +272,7 @@ export function ObjectComponent(
       body = (
         <div
           ref={contentRef}
-          className="h-full w-full rounded-[inherit] bg-text opacity-50"
+          className="h-full w-full select-none rounded-[inherit] bg-text opacity-50"
         />
       );
       break;
@@ -283,7 +283,7 @@ export function ObjectComponent(
       style={geometry}
       className={
         "absolute rounded-lg border-2" +
-        (props.selected ? " border-lavender" : " border-crust")
+        (props.selected ? " border-lavender" : " select-none border-crust")
       }
       ref={containerRef}
       onMouseDown={props.onClick}
