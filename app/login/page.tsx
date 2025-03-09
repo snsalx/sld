@@ -1,15 +1,8 @@
 "use client";
 
-import {
-  CheckIcon,
-  FingerPrintIcon,
-  LockOpenIcon,
-  PaperAirplaneIcon,
-  UserPlusIcon,
-} from "@heroicons/react/16/solid";
+import { CheckIcon, UserPlusIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import PocketBase from "pocketbase";
 import { FormEvent, useContext, useEffect } from "react";
 import { BackendContext } from "../Backend";
 
@@ -22,21 +15,24 @@ export default function LoginPage() {
     }
   }, []);
 
-  async function handleSubmit(formData: FormData) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const formData = new FormData(event.currentTarget);
     const data: any = Object.fromEntries(formData.entries());
 
-    await pb
-      .collection("users")
+    pb.collection("users")
       .authWithPassword(data.email, data.password)
-      .catch(() => alert("E-Mail or password incorrect. Did you register?"));
-    redirect("/");
-
-    // TODO add error handling
+      .then(
+        () => redirect("/"),
+        () => alert("E-Mail or password incorrect. Did you register?"),
+      );
   }
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
-      <form className="flex flex-col gap-4" action={handleSubmit}>
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <h1 className="text-center text-3xl text-blue underline">Log In</h1>
 
         <input
@@ -58,14 +54,14 @@ export default function LoginPage() {
           <CheckIcon className="ml-2 size-8" />
         </button>
 
-        <p className="group text-center text-subtext0">
-          <UserPlusIcon className="me-2 inline size-3 transition group-hover:text-peach" />
+        <p className="text-center text-subtext0">
           Don&apos;t have an account?{" "}
           <Link
             href="/register"
-            className="group-hover:text-peach group-hover:underline"
+            className="text-peach hover:text-sky hover:underline group-hover:text-lavender"
           >
             Register
+            <UserPlusIcon className="ml-2 inline size-3" />
           </Link>
         </p>
       </form>

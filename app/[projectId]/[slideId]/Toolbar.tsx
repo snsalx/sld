@@ -4,11 +4,11 @@ import HomeButton from "../../ProfileButton";
 import {
   ArrowTopRightOnSquareIcon,
   ArrowUpRightIcon,
+  ArrowUturnLeftIcon,
   Bars3CenterLeftIcon,
   CursorArrowRaysIcon,
   MapPinIcon,
   PhotoIcon,
-  PlusIcon,
   Square3Stack3DIcon,
   TrashIcon,
 } from "@heroicons/react/16/solid";
@@ -43,72 +43,83 @@ export default function Toolbar({
   const unselectedObjects = slide.objects.filter((obj) => !obj.selected);
 
   return (
-    <footer className="flex justify-between overflow-auto bg-mantle p-4">
-      <div className="flex gap-4">
-        <HomeButton />
-        <Link
-          href={linkUp}
-          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-text transition hover:scale-95 hover:border-sky`}
-          title="All slides"
-        >
-          <Square3Stack3DIcon className="size-8" />
-        </Link>
-        <input
-          className="h-16 w-96 rounded-lg border-2 border-crust bg-base p-4 text-lg transition hover:border-sky focus:outline-none"
-          placeholder="Slide title"
-          defaultValue={slide.name}
-          onBlur={(event) => onRename(event.target.value)}
-        />
-        <button
-          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-blue transition hover:scale-95 hover:border-sky`}
-          title="Add text"
-          onClick={onAddText}
-        >
-          <Bars3CenterLeftIcon className="size-8" />
-        </button>
-        <button
-          className={`flex hidden h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-sapphire transition hover:scale-95 hover:border-sky`}
-          title="Add arrow"
-          onClick={onAddArrow}
-        >
-          <ArrowUpRightIcon className="size-8" />
-        </button>
-        <button
-          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-sky transition hover:scale-95 hover:border-sky`}
-          title="Add image"
-          onClick={onAddImage}
-        >
-          <PhotoIcon className="size-8" />
-        </button>
-        <button
-          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-teal transition hover:scale-95 hover:border-sky`}
-          title="Add button"
-          onClick={onAddButton}
-        >
-          <ArrowTopRightOnSquareIcon className="size-8" />
-        </button>
-        <button
-          className={`flex hidden h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-green transition hover:scale-95 hover:border-sky`}
-          title="Add map (not yet implemented)"
-        >
-          <MapPinIcon className="size-8" />
-        </button>
-      </div>
+    <footer className="z-40">
+      <div className="flex justify-between gap-3 overflow-auto bg-mantle p-4">
+        <div className="flex gap-3">
+          <button
+            className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-blue transition hover:scale-95 hover:border-sky`}
+            title="Add text"
+            onClick={onAddText}
+          >
+            <Bars3CenterLeftIcon className="size-8" />
+          </button>
+          <button
+            className={`flex hidden h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-sapphire transition hover:scale-95 hover:border-sky`}
+            title="Add arrow"
+            onClick={onAddArrow}
+          >
+            <ArrowUpRightIcon className="size-8" />
+          </button>
+          <button
+            className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-sky transition hover:scale-95 hover:border-sky`}
+            title="Add image"
+            onClick={onAddImage}
+          >
+            <PhotoIcon className="size-8" />
+          </button>
+          <button
+            className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-teal transition hover:scale-95 hover:border-sky`}
+            title="Add button"
+            onClick={onAddButton}
+          >
+            <ArrowTopRightOnSquareIcon className="size-8" />
+          </button>
+          <button
+            className={`flex hidden h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-green transition hover:scale-95 hover:border-sky`}
+            title="Add map (not yet implemented)"
+          >
+            <MapPinIcon className="size-8" />
+          </button>
+        </div>
 
-      <ObjectProperties
-        objects={selectedObjects}
-        slideList={projectSlides}
-        projectId={projectId}
-        onUpdate={(update) =>
-          onChange({
-            ...slide,
-            objects: [...unselectedObjects, ...update],
-          })
-        }
-        onDelete={() => {
-          onChange({ ...slide, objects: unselectedObjects });
-        }}
-      />
+        <ObjectProperties
+          objects={selectedObjects}
+          slideList={projectSlides}
+          projectId={projectId}
+          onUpdate={(update) =>
+            onChange({
+              ...slide,
+              objects: [...unselectedObjects, ...update],
+            })
+          }
+          onDelete={() => {
+            onChange({ ...slide, objects: unselectedObjects });
+          }}
+        />
+
+        <div className="flex gap-3">
+          <input
+            className="h-16 w-96 rounded-lg border-2 border-crust bg-base p-4 text-lg transition hover:border-sky focus:outline-none"
+            placeholder="Slide title"
+            defaultValue={slide.name}
+            onBlur={(event) => onRename(event.target.value)}
+          />
+          <Link
+            href={linkUp}
+            className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-peach transition hover:scale-95 hover:border-peach`}
+            title="All slides"
+          >
+            <Square3Stack3DIcon className="size-8" />
+          </Link>
+          <button
+            onClick={() => history.back()}
+            className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-yellow transition hover:scale-95 hover:border-yellow`}
+            title="Go back"
+          >
+            <ArrowUturnLeftIcon className="size-8" />
+          </button>
+        </div>
+      </div>
     </footer>
   );
 }
@@ -127,25 +138,33 @@ function ObjectProperties({
   onDelete: () => void;
 }) {
   if (objects.length === 0) {
-    return <></>;
+    return (
+      <div className="flex h-16 select-none items-center justify-center rounded-lg border-2 border-crust bg-base px-4 text-lg text-subtext0">
+        No Object Selected
+      </div>
+    );
   }
 
   const object = objects[0];
 
+  console.log(object.link);
+
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-3">
       <Select
         options={{ none: "No link", slide: "Slide", url: "URL" }}
         value={object.link?.kind || "none"}
-        onChange={(value) => {
+        onChange={(kind) => {
+          const defaultValue = kind === "slide" ? slideList[0].id : "";
+
           onUpdate(
             objects.map(
               (object): SlideObject => ({
                 ...object,
                 link:
-                  value === "none"
+                  kind === "none"
                     ? undefined
-                    : { kind: value, value: object.link?.value || "" },
+                    : { kind: kind, value: object.link?.value || defaultValue },
               }),
             ),
           );
@@ -193,7 +212,7 @@ function ObjectProperties({
         <Link
           href={"/" + projectId + "/" + object.link.value}
           title="Follow link"
-          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-green transition hover:scale-95 hover:border-sky`}
+          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-green transition hover:scale-95 hover:border-sky`}
         >
           <CursorArrowRaysIcon className="size-8" />
         </Link>
@@ -202,13 +221,13 @@ function ObjectProperties({
         <Link
           href={object.link.value}
           title="Follow link"
-          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-green transition hover:scale-95 hover:border-sky`}
+          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-green transition hover:scale-95 hover:border-sky`}
         >
           <CursorArrowRaysIcon className="size-8" />
         </Link>
       )}
       <button
-        className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-base text-red transition hover:scale-95 hover:border-red`}
+        className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-red transition hover:scale-95 hover:border-red`}
         title="Delete object"
         onClick={onDelete}
       >

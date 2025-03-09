@@ -4,7 +4,7 @@ import {
   ViewfinderCircleIcon,
 } from "@heroicons/react/16/solid";
 import { Slide, SlideObject } from "../../common";
-import { MouseEvent, useRef } from "react";
+import { MouseEvent, useEffect, useRef } from "react";
 
 export default function Canvas({
   slide,
@@ -156,17 +156,40 @@ export function ObjectComponent(
   const contentRef = useRef<any>(null);
   const containerRef = useRef<any>(null);
 
+  useEffect(() => {
+    if (props.selected) {
+      contentRef?.current?.focus();
+    }
+  }, [contentRef]);
+
   function startTracking(type: "move" | "resize" | "rotate") {
     const controller = new AbortController();
     window.addEventListener(
-      "mouseup",
+      "touchend",
       () => {
         controller.abort();
         props.onMouse("release", 0, 0, null);
       },
       { signal: controller.signal },
     );
+    window.addEventListener(
+      "mouseup",
+      () => {
+        controller.abort();
+        props.onMouse("release", 0, 0, null);
+        contentRef?.current?.focus();
+      },
+      { signal: controller.signal },
+    );
 
+    window.addEventListener(
+      "touchmove",
+      (event) => {
+        const touch = event.touches[0];
+        props.onMouse(type, touch.clientX, touch.clientY, contentRef);
+      },
+      { signal: controller.signal },
+    );
     window.addEventListener(
       "mousemove",
       (event) => {
@@ -241,7 +264,7 @@ export function ObjectComponent(
         <img
           src={content.src}
           ref={contentRef}
-          className={`h-full w-full rounded-[inherit] bg-surface1 ${content.fit === "cover" ? "object-cover" : "object-contain"}`}
+          className={`h-full w-full select-none rounded-[inherit] bg-surface1 ${content.fit === "cover" ? "object-cover" : "object-contain"}`}
         />
       );
       break;
@@ -249,7 +272,7 @@ export function ObjectComponent(
       body = (
         <div
           ref={contentRef}
-          className="h-full w-full rounded-[inherit] bg-text opacity-50"
+          className="h-full w-full select-none rounded-[inherit] bg-text opacity-50"
         />
       );
       break;
@@ -260,7 +283,7 @@ export function ObjectComponent(
       style={geometry}
       className={
         "absolute rounded-lg border-2" +
-        (props.selected ? " border-lavender" : " border-crust")
+        (props.selected ? " border-lavender" : " select-none border-crust")
       }
       ref={containerRef}
       onMouseDown={props.onClick}
@@ -269,21 +292,24 @@ export function ObjectComponent(
         <>
           <button
             onMouseDown={() => startTracking("move")}
-            className="absolute flex h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-blue hover:fill-base hover:opacity-100 active:cursor-grabbing"
+            onTouchStart={() => startTracking("move")}
+            className="absolute z-50 flex h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-blue hover:fill-base hover:opacity-100 active:cursor-grabbing active:bg-blue active:fill-base active:opacity-100"
             style={{ top: 0, left: 0, transform: "translate(-50%, -50%)" }}
           >
             <ViewfinderCircleIcon className="size-8 rotate-45 fill-inherit text-base" />
           </button>
           <button
             onMouseDown={() => startTracking("rotate")}
-            className="absolute flex hidden h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-sky hover:fill-base hover:opacity-100 active:cursor-grabbing"
+            onTouchStart={() => startTracking("rotate")}
+            className="absolute z-50 flex hidden h-16 w-16 cursor-grab items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-sky hover:fill-base hover:opacity-100 active:cursor-grabbing active:bg-sky active:fill-base active:opacity-100"
             style={{ top: 0, right: 0, transform: "translate(50%, -50%)" }}
           >
             <ArrowPathIcon className="size-8 fill-inherit text-base" />
           </button>
           <button
             onMouseDown={() => startTracking("resize")}
-            className="absolute flex h-16 w-16 cursor-se-resize items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-green hover:fill-base hover:opacity-100 active:cursor-grabbing"
+            onTouchStart={() => startTracking("resize")}
+            className="absolute z-50 flex h-16 w-16 cursor-se-resize items-center justify-center rounded-full bg-base fill-text opacity-50 transition hover:bg-green hover:fill-base hover:opacity-100 active:cursor-grabbing active:bg-green active:fill-base active:opacity-100"
             style={{ bottom: 0, right: 0, transform: "translate(50%, 50%)" }}
           >
             <ChevronUpDownIcon className="size-8 -rotate-45 fill-inherit text-base" />

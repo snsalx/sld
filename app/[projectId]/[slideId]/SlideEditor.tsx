@@ -7,12 +7,10 @@ import {
   ContentButton,
   ContentImage,
   ContentText,
-  createDemoSlide,
   Slide,
   SlideObject,
 } from "../../common";
 import Canvas from "./Canvas";
-import { redirect, usePathname } from "next/navigation";
 import { BackendContext, handleBackendError } from "@/app/Backend";
 
 export default function SlideEditor(props: {
@@ -132,7 +130,11 @@ export default function SlideEditor(props: {
         (object as any).image;
       await backend.collection("objects").update(object.id, object);
     }
-    const objects = [...currentSlide.objects, object];
+    object.selected = true;
+    const objects = [
+      ...currentSlide.objects.map((obj) => ({ ...obj, selected: false })),
+      object,
+    ];
 
     await backend
       .collection("slides")
@@ -142,7 +144,7 @@ export default function SlideEditor(props: {
   }
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden">
+    <div className="flex h-svh max-h-svh flex-col overflow-hidden">
       <main className="h-full bg-base">
         <Canvas
           slide={currentSlide}
@@ -176,6 +178,8 @@ export default function SlideEditor(props: {
         ref={upload}
         onChange={(event) => {
           if (!event.target.files) return;
+
+          if (!event.target.files[0]) return;
 
           createObject(
             { kind: "image", src: "", fit: "cover" },
