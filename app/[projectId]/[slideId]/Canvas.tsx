@@ -96,17 +96,6 @@ export default function Canvas({
     setSlide({ ...slide, objects: [...rest, update] });
   }
 
-  function handleClickInViewMode(event: MouseEvent, target: SlideObject) {
-    if (!target.link) {
-      return;
-    }
-
-    const url =
-      target.link.kind === "url"
-        ? target.link.value
-        : "/" + projectId + "/" + target.link.value;
-  }
-
   function handleClick(event: MouseEvent, target: SlideObject) {
     if (!setSlide || !onSave) {
       return;
@@ -328,7 +317,11 @@ export function ObjectComponent(
       style={geometry}
       className={
         "absolute rounded-lg border-2" +
-        (props.selected ? " border-lavender" : " select-none border-crust")
+        (props.selected
+          ? " border-sky"
+          : props.link
+            ? " select-none border-green"
+            : " select-none dark:border-crust")
       }
       ref={containerRef}
       onMouseDown={props.onClick}
