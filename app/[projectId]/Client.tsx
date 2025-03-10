@@ -77,7 +77,7 @@ export default function ProjectPage({ id }: { id: string }) {
           {project.slides.map((slide) => (
             <li key={slide.id} className="flex gap-4">
               <Link
-                href={`/${id}/${slide.id}`}
+                href={`/${id}/${slide.id}` + (viewing ? "?viewing" : "")}
                 className="flex w-full items-center justify-between gap-2 rounded-lg border-2 border-crust bg-mantle p-4 text-xl transition hover:scale-[98%] hover:border-sky"
               >
                 {slide.name}

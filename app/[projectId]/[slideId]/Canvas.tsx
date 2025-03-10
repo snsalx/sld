@@ -307,7 +307,7 @@ export function ObjectComponent(
                   props.link!.value +
                   "&backLink=/" +
                   props.projectId
-                : "/" + props.projectId + "/" + props.link!.value
+                : "/" + props.projectId + "/" + props.link!.value + "?viewing"
             }
             className="rounded-[inherit]"
           >
