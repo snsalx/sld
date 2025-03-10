@@ -9,15 +9,22 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/16/solid";
-import { redirect } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 
 export default function ProjectPage({ id }: { id: string }) {
   const backend = useContext(BackendContext);
   const [project, setProject] = useState<Project | undefined>();
+  const params = useSearchParams();
 
   useEffect(() => {
     refetch();
   }, [id]);
+
+  let viewing = params.get("viewing") !== null;
+
+  if (!backend!.authStore.isValid) {
+    viewing = true;
+  }
 
   async function refetch() {
     const project = await backend!
@@ -75,22 +82,26 @@ export default function ProjectPage({ id }: { id: string }) {
               >
                 {slide.name}
               </Link>
-              <button
-                className={`flex h-16 w-16 min-w-16 items-center justify-center rounded-lg border-2 border-crust bg-mantle text-base text-red transition hover:scale-95 hover:border-red`}
-                title="Delete slide"
-                onClick={() => handleDelete(slide)}
-              >
-                <TrashIcon className="size-8" />
-              </button>
+              {viewing || (
+                <button
+                  className={`flex h-16 w-16 min-w-16 items-center justify-center rounded-lg border-2 border-crust bg-mantle text-base text-red transition hover:scale-95 hover:border-red`}
+                  title="Delete slide"
+                  onClick={() => handleDelete(slide)}
+                >
+                  <TrashIcon className="size-8" />
+                </button>
+              )}
             </li>
           ))}
-          <button
-            className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-crust bg-mantle p-4 text-xl text-green transition hover:scale-[98%] hover:border-sky"
-            onClick={createSlide}
-          >
-            Create
-            <PlusIcon className="size-8" />
-          </button>
+          {viewing || (
+            <button
+              className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-crust bg-mantle p-4 text-xl text-green transition hover:scale-[98%] hover:border-sky"
+              onClick={createSlide}
+            >
+              Create
+              <PlusIcon className="size-8" />
+            </button>
+          )}
           <p className="group w-[40ch] text-center text-subtext0">
             <InformationCircleIcon className="me-2 inline size-3" />
             Note: this will be a hierarchical tree showing links in the next

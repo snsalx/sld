@@ -1,13 +1,20 @@
+"use client";
+
 import {
   ArrowUturnLeftIcon,
   QuestionMarkCircleIcon,
   Square3Stack3DIcon,
 } from "@heroicons/react/16/solid";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 // like Toolbar, but for view mode
 
 export default function Navbar(props: { title: string; projectLink: string }) {
+  const params = useSearchParams();
+
+  const viewing = params.get("viewing") !== null;
+
   return (
     <footer className="z-40">
       <div className="flex justify-between gap-6 overflow-auto bg-mantle p-4">
@@ -24,7 +31,7 @@ export default function Navbar(props: { title: string; projectLink: string }) {
             <QuestionMarkCircleIcon className="size-8" />
           </Link>
           <Link
-            href={props.projectLink}
+            href={props.projectLink + (viewing ? "?viewing" : "")}
             className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-teal transition hover:scale-95 hover:border-teal`}
             title="All slides"
           >
