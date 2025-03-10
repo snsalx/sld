@@ -1,3 +1,5 @@
+"use client";
+
 import {
   BoltIcon,
   CodeBracketIcon,
@@ -22,9 +24,12 @@ export default function AboutPage() {
         tool for making presentations with complexly nested slides.
       </p>
 
-      <Link href="/" className="mb-4 block text-peach underline">
+      <button
+        onClick={() => history.back()}
+        className="mb-4 block text-peach underline"
+      >
         Back to the app
-      </Link>
+      </button>
 
       <h2 className="pt-4 text-3xl text-blue underline">Documentation</h2>
       <p className="py-4">

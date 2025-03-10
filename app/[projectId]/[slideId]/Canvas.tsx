@@ -303,7 +303,10 @@ export function ObjectComponent(
           <Link
             href={
               props.link!.kind === "url"
-                ? "/external?url=" + props.link!.value
+                ? "/external?url=" +
+                  props.link!.value +
+                  "&backLink=/" +
+                  props.projectId
                 : "/" + props.projectId + "/" + props.link!.value
             }
             className="rounded-[inherit]"

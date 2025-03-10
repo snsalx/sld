@@ -13,6 +13,7 @@ import {
 import Canvas from "./Canvas";
 import { BackendContext, handleBackendError } from "@/app/Backend";
 import { useSearchParams } from "next/navigation";
+import Navbar from "@/app/Navbar";
 
 export default function SlideEditor(props: {
   projectId: string;
@@ -161,41 +162,46 @@ export default function SlideEditor(props: {
           onSave={viewing ? undefined : sendToServer}
         />
       </main>
+      {viewing ? (
+        <Navbar title={currentSlide.name} projectLink={"/" + props.projectId} />
+      ) : (
+        <>
+          <Toolbar
+            slide={currentSlide}
+            projectSlides={slides}
+            projectId={props.projectId}
+            onChange={(slide) => {
+              updateCurrentSlide(slide);
+              sendToServer();
+            }}
+            onRename={renameSlide}
+            onAddText={() => createObject({ kind: "text", body: "" })}
+            onAddArrow={() => createObject({ kind: "arrow" })}
+            onAddImage={() => {
+              if (!upload.current) return;
 
-      <Toolbar
-        slide={currentSlide}
-        projectSlides={slides}
-        projectId={props.projectId}
-        onChange={(slide) => {
-          updateCurrentSlide(slide);
-          sendToServer();
-        }}
-        onRename={renameSlide}
-        onAddText={() => createObject({ kind: "text", body: "" })}
-        onAddArrow={() => createObject({ kind: "arrow" })}
-        onAddImage={() => {
-          if (!upload.current) return;
+              upload.current.click();
+            }}
+            onAddButton={() => createObject({ kind: "button" })}
+          />
+          <input
+            className="hidden"
+            accept="image/png,image/jpeg,image/svg+xml"
+            type="file"
+            ref={upload}
+            onChange={(event) => {
+              if (!event.target.files) return;
 
-          upload.current.click();
-        }}
-        onAddButton={() => createObject({ kind: "button" })}
-      />
-      <input
-        className="hidden"
-        accept="image/png,image/jpeg,image/svg+xml"
-        type="file"
-        ref={upload}
-        onChange={(event) => {
-          if (!event.target.files) return;
+              if (!event.target.files[0]) return;
 
-          if (!event.target.files[0]) return;
-
-          createObject(
-            { kind: "image", src: "", fit: "cover" },
-            event.target.files[0],
-          );
-        }}
-      />
+              createObject(
+                { kind: "image", src: "", fit: "cover" },
+                event.target.files[0],
+              );
+            }}
+          />
+        </>
+      )}{" "}
     </div>
   );
 }
