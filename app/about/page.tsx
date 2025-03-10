@@ -28,8 +28,8 @@ export default function AboutPage() {
 
       <h2 className="pt-4 text-3xl text-blue underline">Documentation</h2>
       <p className="py-4">
-        Docs are coming this month. Ideally, I&apos;d want the user interface to be
-        self-explanatory, but we&apos;re far from that.
+        Docs are coming this month. Ideally, I&apos;d want the user interface to
+        be self-explanatory, but we&apos;re far from that.
       </p>
 
       <h2 className="pt-4 text-3xl text-blue underline">Contributors</h2>
