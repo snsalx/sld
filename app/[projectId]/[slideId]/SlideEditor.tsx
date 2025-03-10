@@ -12,6 +12,7 @@ import {
 } from "../../common";
 import Canvas from "./Canvas";
 import { BackendContext, handleBackendError } from "@/app/Backend";
+import { useSearchParams } from "next/navigation";
 
 export default function SlideEditor(props: {
   projectId: string;
@@ -23,6 +24,7 @@ export default function SlideEditor(props: {
   const [deletedObjects, setDeletedObjects] = useState<string[]>([]);
   const [sendOnRerender, setSendOnRerender] = useState(false);
   const upload = useRef<HTMLInputElement>(null);
+  const params = useSearchParams();
 
   useEffect(() => {
     refetch();
@@ -31,6 +33,8 @@ export default function SlideEditor(props: {
   if (!currentSlide) {
     return <div>Loading slide...</div>;
   }
+
+  const viewing = params.get("viewing") !== null;
 
   function updateCurrentSlide(update: Slide) {
     if (!currentSlide) return;
@@ -149,8 +153,8 @@ export default function SlideEditor(props: {
         <Canvas
           slide={currentSlide}
           projectId={props.projectId}
-          setSlide={updateCurrentSlide}
-          onSave={sendToServer}
+          setSlide={viewing ? undefined : updateCurrentSlide}
+          onSave={viewing ? undefined : sendToServer}
         />
       </main>
 
