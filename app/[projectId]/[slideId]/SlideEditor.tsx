@@ -34,7 +34,11 @@ export default function SlideEditor(props: {
     return <div>Loading slide...</div>;
   }
 
-  const viewing = params.get("viewing") !== null;
+  let viewing = params.get("viewing") !== null;
+
+  if (!backend.authStore.isValid) {
+    viewing = true;
+  }
 
   function updateCurrentSlide(update: Slide) {
     if (!currentSlide) return;
