@@ -148,6 +148,7 @@ export default function SlideEditor(props: {
       <main className="h-full bg-base">
         <Canvas
           slide={currentSlide}
+          projectId={props.projectId}
           setSlide={updateCurrentSlide}
           onSave={sendToServer}
         />

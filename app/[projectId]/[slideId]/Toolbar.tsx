@@ -219,7 +219,7 @@ function ObjectProperties({
       )}
       {object.link?.kind === "url" && (
         <Link
-          href={object.link.value}
+          href={"/external?url=" + object.link.value}
           title="Follow link"
           className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-green transition hover:scale-95 hover:border-sky`}
         >
