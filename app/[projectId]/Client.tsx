@@ -1,20 +1,25 @@
 "use client";
+
 import { useContext, useEffect, useState } from "react";
 import HomeButton from "../ProfileButton";
 import { Project, Slide } from "../common";
 import { BackendContext, handleBackendError } from "../Backend";
 import Link from "next/link";
 import {
+  BookOpenIcon,
   InformationCircleIcon,
   PlusIcon,
+  PencilIcon,
   TrashIcon,
-} from "@heroicons/react/16/solid";
+} from "@heroicons/react/24/solid";
 import { redirect, useSearchParams } from "next/navigation";
 
 export default function ProjectPage({ id }: { id: string }) {
   const backend = useContext(BackendContext);
   const [project, setProject] = useState<Project | undefined>();
   const params = useSearchParams();
+
+  let canEdit = true;
 
   useEffect(() => {
     refetch();
@@ -24,6 +29,7 @@ export default function ProjectPage({ id }: { id: string }) {
 
   if (!backend!.authStore.isValid) {
     viewing = true;
+    canEdit = false;
   }
 
   async function refetch() {
@@ -118,6 +124,25 @@ export default function ProjectPage({ id }: { id: string }) {
             onBlur={(event) => setName(event.target.value)}
           />
         </div>
+        {viewing ? (
+          canEdit ? (
+            <Link
+              className="h-16 w-16 rounded-lg border-2 border-crust bg-base p-4 text-lg text-text transition hover:scale-95 hover:border-sky"
+              href={"/" + id}
+              title="Switch to edit mode"
+            >
+              <PencilIcon />
+            </Link>
+          ) : null
+        ) : (
+          <Link
+            className="h-16 w-16 rounded-lg border-2 border-crust bg-base p-4 text-lg text-text transition hover:scale-95 hover:border-sky"
+            href="?viewing"
+            title="Switch to view mode"
+          >
+            <BookOpenIcon />
+          </Link>
+        )}
       </footer>
     </div>
   );
