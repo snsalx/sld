@@ -81,7 +81,7 @@ export default function Home() {
             href="/about"
             className="group-hover:text-peach group-hover:underline"
           >
-            sld v0.1.1
+            sld v0.2.0
           </Link>
         </p>
       </div>

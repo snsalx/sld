@@ -1,23 +1,36 @@
 "use client";
+
 import { useContext, useEffect, useState } from "react";
 import HomeButton from "../ProfileButton";
 import { Project, Slide } from "../common";
 import { BackendContext, handleBackendError } from "../Backend";
 import Link from "next/link";
 import {
+  BookOpenIcon,
   InformationCircleIcon,
   PlusIcon,
+  PencilIcon,
   TrashIcon,
-} from "@heroicons/react/16/solid";
-import { redirect } from "next/navigation";
+} from "@heroicons/react/24/solid";
+import { redirect, useSearchParams } from "next/navigation";
 
 export default function ProjectPage({ id }: { id: string }) {
   const backend = useContext(BackendContext);
   const [project, setProject] = useState<Project | undefined>();
+  const params = useSearchParams();
+
+  let canEdit = true;
 
   useEffect(() => {
     refetch();
   }, [id]);
+
+  let viewing = params.get("viewing") !== null;
+
+  if (!backend!.authStore.isValid) {
+    viewing = true;
+    canEdit = false;
+  }
 
   async function refetch() {
     const project = await backend!
@@ -69,27 +82,31 @@ export default function ProjectPage({ id }: { id: string }) {
         {project.slides.map((slide) => (
           <li key={slide.id} className="flex gap-4">
             <Link
-              href={`/${id}/${slide.id}`}
+              href={`/${id}/${slide.id}` + (viewing ? "?viewing" : "")}
               className="flex w-full items-center justify-between gap-2 rounded-lg border-2 border-crust bg-mantle p-4 text-xl transition hover:scale-[98%] hover:border-sky"
             >
               {slide.name}
             </Link>
-            <button
-              className={`flex h-16 w-16 min-w-16 items-center justify-center rounded-lg border-2 border-crust bg-mantle text-base text-red transition hover:scale-95 hover:border-red`}
-              title="Delete slide"
-              onClick={() => handleDelete(slide)}
-            >
-              <TrashIcon className="size-8" />
-            </button>
+            {viewing || (
+              <button
+                className={`flex h-16 w-16 min-w-16 items-center justify-center rounded-lg border-2 border-crust bg-mantle text-base text-red transition hover:scale-95 hover:border-red`}
+                title="Delete slide"
+                onClick={() => handleDelete(slide)}
+              >
+                <TrashIcon className="size-8" />
+              </button>
+            )}
           </li>
         ))}
-        <button
-          className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-crust bg-mantle p-4 text-xl text-green transition hover:scale-[98%] hover:border-sky"
-          onClick={createSlide}
-        >
-          Create
-          <PlusIcon className="size-8" />
-        </button>
+        {viewing || (
+          <button
+            className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-crust bg-mantle p-4 text-xl text-green transition hover:scale-[98%] hover:border-sky"
+            onClick={createSlide}
+          >
+            Create
+            <PlusIcon className="size-8" />
+          </button>
+        )}
         <p className="group mb-auto w-[40ch] text-center text-subtext0">
           <InformationCircleIcon className="me-2 inline size-3" />
           Note: this will be a hierarchical tree showing links in the next
@@ -107,6 +124,25 @@ export default function ProjectPage({ id }: { id: string }) {
             onBlur={(event) => setName(event.target.value)}
           />
         </div>
+        {viewing ? (
+          canEdit ? (
+            <Link
+              className="h-16 w-16 rounded-lg border-2 border-crust bg-base p-4 text-lg text-text transition hover:scale-95 hover:border-sky"
+              href={"/" + id}
+              title="Switch to edit mode"
+            >
+              <PencilIcon />
+            </Link>
+          ) : null
+        ) : (
+          <Link
+            className="h-16 w-16 rounded-lg border-2 border-crust bg-base p-4 text-lg text-text transition hover:scale-95 hover:border-sky"
+            href="?viewing"
+            title="Switch to view mode"
+          >
+            <BookOpenIcon />
+          </Link>
+        )}
       </footer>
     </div>
   );

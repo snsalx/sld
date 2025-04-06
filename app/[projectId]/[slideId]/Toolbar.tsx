@@ -44,7 +44,7 @@ export default function Toolbar({
 
   return (
     <footer className="z-40">
-      <div className="flex justify-between gap-3 overflow-auto bg-mantle p-4">
+      <div className="flex justify-between gap-6 overflow-auto bg-mantle p-4">
         <div className="flex gap-3">
           <button
             className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-blue transition hover:scale-95 hover:border-sky`}
@@ -93,13 +93,17 @@ export default function Toolbar({
             })
           }
           onDelete={() => {
-            onChange({ ...slide, objects: unselectedObjects });
+            if (
+              confirm("Are you sure you want to delete the object permanently?")
+            ) {
+              onChange({ ...slide, objects: unselectedObjects });
+            }
           }}
         />
 
         <div className="flex gap-3">
           <input
-            className="h-16 w-96 rounded-lg border-2 border-crust bg-base p-4 text-lg transition hover:border-sky focus:outline-none"
+            className="h-16 w-64 rounded-lg border-2 border-crust bg-base p-4 text-lg transition hover:border-sky focus:outline-none"
             placeholder="Slide title"
             defaultValue={slide.name}
             onBlur={(event) => onRename(event.target.value)}
@@ -139,7 +143,7 @@ function ObjectProperties({
 }) {
   if (objects.length === 0) {
     return (
-      <div className="flex h-16 select-none items-center justify-center rounded-lg border-2 border-crust bg-base px-4 text-lg text-subtext0">
+      <div className="flex h-16 min-w-fit select-none items-center justify-center rounded-lg border-2 border-crust bg-base px-4 text-lg text-subtext0">
         No Object Selected
       </div>
     );
@@ -219,7 +223,9 @@ function ObjectProperties({
       )}
       {object.link?.kind === "url" && (
         <Link
-          href={object.link.value}
+          href={
+            "/external?url=" + object.link.value + "&backLink=/" + projectId
+          }
           title="Follow link"
           className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-green transition hover:scale-95 hover:border-sky`}
         >

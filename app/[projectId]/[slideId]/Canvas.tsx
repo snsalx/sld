@@ -4,16 +4,20 @@ import {
   ViewfinderCircleIcon,
 } from "@heroicons/react/16/solid";
 import { Slide, SlideObject } from "../../common";
-import { MouseEvent, useEffect, useRef } from "react";
+import { Fragment, MouseEvent, ReactNode, useEffect, useRef } from "react";
+import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default function Canvas({
   slide,
+  projectId,
   setSlide,
   onSave,
 }: {
   slide: Slide;
-  setSlide: (update: Slide) => void;
-  onSave: () => void;
+  projectId: string;
+  setSlide?: (update: Slide) => void;
+  onSave?: () => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -24,7 +28,7 @@ export default function Canvas({
     y: number,
     objectRef: any,
   ) {
-    if (!ref || !ref.current) {
+    if (!ref || !ref.current || !setSlide || !onSave) {
       return;
     }
 
@@ -93,6 +97,10 @@ export default function Canvas({
   }
 
   function handleClick(event: MouseEvent, target: SlideObject) {
+    if (!setSlide || !onSave) {
+      return;
+    }
+
     let objects = slide.objects;
 
     if (!event.shiftKey) {
@@ -108,6 +116,10 @@ export default function Canvas({
   // bug: no unselect support
 
   function handleObjectUpdate(target: SlideObject) {
+    if (!setSlide || !onSave) {
+      return;
+    }
+
     const rest = slide.objects.filter((obj) => obj.id !== target.id);
     setSlide({ ...slide, objects: [...rest, target] });
     onSave();
@@ -118,8 +130,13 @@ export default function Canvas({
       {slide.objects.map((object) => (
         <ObjectComponent
           {...object}
+          projectId={projectId}
           onMouse={(type, x, y, ref) => handleMouse(object, type, x, y, ref)}
-          onClick={(event) => handleClick(event, object)}
+          onClick={
+            setSlide && onSave
+              ? (event) => handleClick(event, object)
+              : undefined
+          }
           onUpdate={handleObjectUpdate}
           key={object.id}
         />
@@ -135,6 +152,7 @@ function snapToGrid(coordinate: number) {
 
 export function ObjectComponent(
   props: SlideObject & {
+    projectId: string;
     onMouse: (
       type: "move" | "resize" | "rotate" | "release",
       x: number,
@@ -203,6 +221,17 @@ export function ObjectComponent(
   const content = props.content;
   switch (content.kind) {
     case "text":
+      if (!props.onClick) {
+        body = (
+          <div className="h-full w-full overflow-auto rounded-[inherit] bg-surface1 p-2 focus:outline-none">
+            {content.body.split("\n").map((paragraph) => (
+              <p className="mb-4">{paragraph}</p>
+            ))}
+          </div>
+        );
+        break;
+      }
+
       body = (
         <textarea
           ref={contentRef}
@@ -278,12 +307,35 @@ export function ObjectComponent(
       break;
   }
 
+  const Wrapper: ({ children }: { children: ReactNode }) => ReactNode =
+    props.onClick || !props.link
+      ? Fragment
+      : ({ children }) => (
+          <Link
+            href={
+              props.link!.kind === "url"
+                ? "/external?url=" +
+                  props.link!.value +
+                  "&backLink=/" +
+                  props.projectId
+                : "/" + props.projectId + "/" + props.link!.value + "?viewing"
+            }
+            className="rounded-[inherit]"
+          >
+            {children}
+          </Link>
+        );
+
   return (
     <div
       style={geometry}
       className={
         "absolute rounded-lg border-2" +
-        (props.selected ? " border-lavender" : " select-none border-crust")
+        (props.selected
+          ? " border-sky"
+          : props.link
+            ? " select-none border-green"
+            : " select-none dark:border-crust")
       }
       ref={containerRef}
       onMouseDown={props.onClick}
@@ -316,7 +368,7 @@ export function ObjectComponent(
           </button>
         </>
       )}
-      {body}
+      <Wrapper>{body}</Wrapper>
     </div>
   );
 }
