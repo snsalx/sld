@@ -1,6 +1,5 @@
 "use client";
 
-import { ArrowUturnLeftIcon } from "@heroicons/react/16/solid";
 import { useSearchParams } from "next/navigation";
 import Navbar from "../Navbar";
 

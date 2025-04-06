@@ -201,7 +201,7 @@ export default function SlideEditor(props: {
             }}
           />
         </>
-      )}{" "}
+      )}
     </div>
   );
 }
