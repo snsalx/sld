@@ -4,13 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { BackendContext } from "./Backend";
 import { redirect } from "next/navigation";
 import { Project } from "./common";
-import {
-  FireIcon,
-  PaperAirplaneIcon,
-  PlayCircleIcon,
-  PlayIcon,
-  PlusIcon,
-} from "@heroicons/react/16/solid";
+import { FireIcon, PlusIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 
 type ProjectSkeleton = Omit<Project, "slides">;
@@ -59,9 +53,9 @@ export default function Home() {
   }
 
   return (
-    <div className="flex h-screen items-center justify-center bg-base">
-      <div className="flex flex-col gap-4 rounded-lg p-2">
-        <h1 className="text-center text-3xl text-blue underline underline-offset-2">
+    <div className="h-screen bg-base">
+      <div className="m-auto flex h-full w-fit flex-col gap-4 overflow-auto rounded-lg p-2">
+        <h1 className="mt-auto text-center text-3xl text-blue underline underline-offset-2">
           My Projects
         </h1>
         {projects.map((project) => (
@@ -80,7 +74,7 @@ export default function Home() {
           Create
           <PlusIcon className="size-8" />
         </button>
-        <p className="group text-center text-subtext0">
+        <p className="group mb-auto text-center text-subtext0">
           <FireIcon className="me-2 inline size-3 transition group-hover:text-peach" />
           Powered by{" "}
           <Link

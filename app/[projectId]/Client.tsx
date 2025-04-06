@@ -69,9 +69,8 @@ export default function ProjectPage({ id }: { id: string }) {
 
   return (
     <div className="flex h-screen flex-col">
-      <main className="flex h-full items-center justify-center bg-base">
-        <ul className="flex w-fit flex-col gap-4 rounded-lg p-2">
-          <h1 className="text-center text-3xl text-blue underline underline-offset-2">
+      <ul className="m-auto flex h-full w-fit flex-col gap-4 overflow-auto rounded-lg p-2">
+        <h1 className="mt-auto text-center text-3xl text-blue underline underline-offset-2">
             Slides
           </h1>
           {project.slides.map((slide) => (
@@ -102,13 +101,12 @@ export default function ProjectPage({ id }: { id: string }) {
               <PlusIcon className="size-8" />
             </button>
           )}
-          <p className="group w-[40ch] text-center text-subtext0">
-            <InformationCircleIcon className="me-2 inline size-3" />
-            Note: this will be a hierarchical tree showing links in the next
-            version
-          </p>
-        </ul>
-      </main>
+        <p className="group mb-auto w-[40ch] text-center text-subtext0">
+          <InformationCircleIcon className="me-2 inline size-3" />
+          Note: this will be a hierarchical tree showing links in the next
+          version
+        </p>
+      </ul>
 
       <footer className="flex justify-between bg-mantle p-4">
         <div className="flex gap-4">
