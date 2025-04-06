@@ -221,6 +221,17 @@ export function ObjectComponent(
   const content = props.content;
   switch (content.kind) {
     case "text":
+      if (!props.onClick) {
+        body = (
+          <div className="h-full w-full overflow-auto rounded-[inherit] bg-surface1 p-2 focus:outline-none">
+            {content.body.split("\n").map((paragraph) => (
+              <p className="mb-4">{paragraph}</p>
+            ))}
+          </div>
+        );
+        break;
+      }
+
       body = (
         <textarea
           ref={contentRef}
