@@ -93,7 +93,11 @@ export default function Toolbar({
             })
           }
           onDelete={() => {
-            onChange({ ...slide, objects: unselectedObjects });
+            if (
+              confirm("Are you sure you want to delete the object permanently?")
+            ) {
+              onChange({ ...slide, objects: unselectedObjects });
+            }
           }}
         />
 
