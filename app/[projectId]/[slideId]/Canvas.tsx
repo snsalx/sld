@@ -225,7 +225,7 @@ export function ObjectComponent(
         body = (
           <div className="h-full w-full overflow-auto rounded-[inherit] bg-surface1 p-2 focus:outline-none">
             {content.body.split("\n").map((paragraph) => (
-              <p className="mb-4">{paragraph}</p>
+              <p key={paragraph} className="mb-4">{paragraph}</p>
             ))}
           </div>
         );
