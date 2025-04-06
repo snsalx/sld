@@ -1,4 +1,4 @@
-The docs are coming sometime in March.
+The docs are coming sometime in late April.
 
 ## Self-Hosting
 
