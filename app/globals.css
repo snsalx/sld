@@ -6,3 +6,9 @@ html,
 body {
   overscroll-behavior: none;
 }
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
