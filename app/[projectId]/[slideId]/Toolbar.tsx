@@ -14,6 +14,7 @@ import {
 } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 export default function Toolbar({
   slide,
@@ -46,40 +47,42 @@ export default function Toolbar({
     <footer className="z-40">
       <div className="flex justify-between gap-6 overflow-auto bg-mantle p-4">
         <div className="flex gap-3">
-          <button
-            className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-blue transition hover:scale-95 hover:border-sky`}
+          <Button
+            variant="blue"
             title="Add text"
             onClick={onAddText}
           >
-            <Bars3CenterLeftIcon className="size-8" />
-          </button>
-          <button
-            className={`flex hidden h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-sapphire transition hover:scale-95 hover:border-sky`}
+            <Bars3CenterLeftIcon />
+          </Button>
+          <Button
+            className="hidden"
+            variant="sapphire"
             title="Add arrow"
             onClick={onAddArrow}
           >
-            <ArrowUpRightIcon className="size-8" />
-          </button>
-          <button
-            className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-sky transition hover:scale-95 hover:border-sky`}
+            <ArrowUpRightIcon />
+          </Button>
+          <Button
+            variant="sky"
             title="Add image"
             onClick={onAddImage}
           >
-            <PhotoIcon className="size-8" />
-          </button>
-          <button
-            className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-teal transition hover:scale-95 hover:border-sky`}
+            <PhotoIcon />
+          </Button>
+          <Button
+            variant="teal"
             title="Add button"
             onClick={onAddButton}
           >
-            <ArrowTopRightOnSquareIcon className="size-8" />
-          </button>
-          <button
-            className={`flex hidden h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-green transition hover:scale-95 hover:border-sky`}
+            <ArrowTopRightOnSquareIcon />
+          </Button>
+          <Button
+            className="hidden"
+            variant="green"
             title="Add map (not yet implemented)"
           >
-            <MapPinIcon className="size-8" />
-          </button>
+            <MapPinIcon />
+          </Button>
         </div>
 
         <ObjectProperties
@@ -108,20 +111,23 @@ export default function Toolbar({
             defaultValue={slide.name}
             onBlur={(event) => onRename(event.target.value)}
           />
-          <Link
-            href={linkUp}
-            className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-peach transition hover:scale-95 hover:border-peach`}
-            title="All slides"
-          >
-            <Square3Stack3DIcon className="size-8" />
-          </Link>
-          <button
+          <Button asChild
+            variant="peach"
+              title="All slides"
+            >
+            <Link
+              href={linkUp}
+            >
+              <Square3Stack3DIcon />
+            </Link>
+          </Button>
+          <Button
             onClick={() => history.back()}
-            className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-yellow transition hover:scale-95 hover:border-yellow`}
+            variant="yellow"
             title="Go back"
           >
-            <ArrowUturnLeftIcon className="size-8" />
-          </button>
+            <ArrowUturnLeftIcon />
+          </Button>
         </div>
       </div>
     </footer>
@@ -213,32 +219,38 @@ function ObjectProperties({
         />
       )}
       {object.link?.kind === "slide" && (
+          <Button asChild
+            variant="green"
+          title="Follow link"
+            >
         <Link
           href={"/" + projectId + "/" + object.link.value}
-          title="Follow link"
-          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-green transition hover:scale-95 hover:border-sky`}
         >
-          <CursorArrowRaysIcon className="size-8" />
+          <CursorArrowRaysIcon />
         </Link>
+      </Button>
       )}
       {object.link?.kind === "url" && (
+          <Button asChild
+            variant="green"
+          title="Follow link"
+            >
         <Link
           href={
             "/external?url=" + object.link.value + "&backLink=/" + projectId
           }
-          title="Follow link"
-          className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-green transition hover:scale-95 hover:border-sky`}
         >
-          <CursorArrowRaysIcon className="size-8" />
+          <CursorArrowRaysIcon />
         </Link>
+      </Button>
       )}
-      <button
-        className={`flex h-16 w-16 items-center justify-center rounded-lg border-2 border-crust bg-base text-red transition hover:scale-95 hover:border-red`}
+      <Button
+        variant="red"
         title="Delete object"
         onClick={onDelete}
       >
-        <TrashIcon className="size-8" />
-      </button>
+        <TrashIcon />
+      </Button>
     </div>
   );
 }

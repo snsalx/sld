@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import PocketBase from "pocketbase";
 import { FormEvent, useContext, useEffect } from "react";
 import { BackendContext } from "../Backend";
+import { Button } from "@/components/ui/button";
 
 export default function RegisterPage() {
   const pb = useContext(BackendContext)!;
@@ -101,10 +102,10 @@ export default function RegisterPage() {
           className="block h-16 w-96 rounded-lg border-2 border-crust bg-base bg-mantle p-4 text-lg transition hover:border-sky focus:outline-none"
         />
 
-        <button className="flex h-16 w-full items-center justify-center rounded-lg border-2 border-crust bg-mantle text-base text-lg text-green transition hover:scale-95 hover:border-sky">
+        <Button variant="green" size="fill" className="bg-mantle">
           Confirm
           <CheckIcon className="ml-2 size-8" />
-        </button>
+        </Button>
 
         <p className="group text-center text-subtext0">
           Already have an account?{" "}
