@@ -243,6 +243,7 @@ export function ObjectComponent(
       body = (
         <MDXEditor
           className="force-hide-outline prose h-full w-full max-w-full max-w-none resize-none overflow-auto rounded-[inherit] bg-surface1 p-2 dark:prose-invert focus:outline-none"
+          contentEditableClassName="text-editor"
           onChange={(value) =>
             props.onUpdate({
               ...props,
