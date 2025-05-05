@@ -8,17 +8,12 @@ import { Fragment, MouseEvent, ReactNode, useEffect, useRef } from "react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
-  BlockTypeSelect,
-  BoldItalicUnderlineToggles,
-  CreateLink,
   headingsPlugin,
   listsPlugin,
   markdownShortcutPlugin,
   MDXEditor,
   quotePlugin,
   thematicBreakPlugin,
-  toolbarPlugin,
-  UndoRedo,
 } from "@mdxeditor/editor";
 
 export default function Canvas({
@@ -234,7 +229,7 @@ export function ObjectComponent(
     case "text":
       if (!props.onClick) {
         body = (
-          <div className="h-full w-full overflow-auto rounded-[inherit] bg-surface0 p-2 focus:outline-none">
+          <div className="h-full w-full overflow-auto rounded-[inherit] bg-surface1 p-2 focus:outline-none">
             {content.body.split("\n").map((paragraph) => (
               <p key={paragraph} className="mb-4">
                 {paragraph}
@@ -247,7 +242,7 @@ export function ObjectComponent(
 
       body = (
         <MDXEditor
-          className="force-hide-outline prose h-full w-full max-w-full max-w-none resize-none rounded-[inherit] bg-surface0 dark:prose-invert focus:outline-none"
+          className="force-hide-outline prose h-full w-full max-w-full max-w-none resize-none overflow-auto rounded-[inherit] bg-surface1 p-2 dark:prose-invert focus:outline-none"
           onChange={(value) =>
             props.onUpdate({
               ...props,
@@ -262,15 +257,6 @@ export function ObjectComponent(
             quotePlugin(),
             thematicBreakPlugin(),
             markdownShortcutPlugin(),
-            toolbarPlugin({
-              toolbarClassName: "text-editor-tools",
-              toolbarContents: () => (
-                <>
-                  <BlockTypeSelect />
-                  <BoldItalicUnderlineToggles />
-                </>
-              ),
-            }),
           ]}
         />
       );
@@ -322,7 +308,7 @@ export function ObjectComponent(
         <img
           src={content.src}
           ref={contentRef}
-          className={`h-full w-full select-none rounded-[inherit] bg-surface0 ${content.fit === "cover" ? "object-cover" : "object-contain"}`}
+          className={`h-full w-full select-none rounded-[inherit] bg-surface1 ${content.fit === "cover" ? "object-cover" : "object-contain"}`}
         />
       );
       break;

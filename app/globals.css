@@ -12,7 +12,6 @@ body {
 }
 
 .prose * {
-  background: inherit;
   color: rgba(var(--ctp-text));
   --tw-prose-bullets: rgba(var(--ctp-sky));
   --tw-prose-quote-borders: rgba(var(--ctp-green));
@@ -24,25 +23,4 @@ body {
 
 .prose strong {
   color: rgba(var(--ctp-blue));
-}
-
-.text-editor-tools {
-  @apply flex h-16 items-center gap-4 bg-surface1 px-4 py-2;
-  border-top-left-radius: inherit;
-  border-top-right-radius: inherit;
-}
-
-.text-editor-tools * {
-  @apply flex;
-}
-
-.mdxeditor-popup-container * {
-  @apply rounded-lg bg-surface2 p-2;
-}
-
-.mdxeditor-root-contenteditable {
-  @apply box-border overflow-auto p-2;
-  height: calc(100% - 4rem);
-  border-bottom-left-radius: inherit;
-  border-bottom-right-radius: inherit;
 }
