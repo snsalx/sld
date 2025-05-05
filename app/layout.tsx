@@ -27,7 +27,7 @@ export default function RootLayout({
     return (
       <html lang="en">
         <body
-          className={`${font.variable} ${font.variable} latte flex h-screen w-screen items-center justify-center gap-4 bg-base text-3xl text-red antialiased dark:mocha selection:bg-lavender selection:text-base`}
+          className={`${font.variable} ${font.variable} latte flex h-screen w-screen items-center justify-center gap-4 bg-base text-3xl text-red antialiased dark:mocha selection:bg-sky selection:text-base`}
           style={{ fontFamily: "JetBrains Mono" }}
         >
           <ExclamationTriangleIcon className="size-16" />
@@ -40,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${font.variable} ${font.variable} latte bg-base text-text antialiased dark:mocha selection:bg-lavender selection:text-base`}
+        className={`${font.variable} ${font.variable} latte bg-base text-text antialiased dark:mocha selection:bg-sky selection:text-base`}
         style={{ fontFamily: "JetBrains Mono" }}
       >
         <BackendContextProvider url={backendUrl}>

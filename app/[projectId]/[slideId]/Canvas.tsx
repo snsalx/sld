@@ -7,6 +7,15 @@ import { Slide, SlideObject } from "../../common";
 import { Fragment, MouseEvent, ReactNode, useEffect, useRef } from "react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import {
+  headingsPlugin,
+  listsPlugin,
+  markdownShortcutPlugin,
+  MDXEditor,
+  quotePlugin,
+  thematicBreakPlugin,
+} from "@mdxeditor/editor";
+import Markdown from "react-markdown";
 
 export default function Canvas({
   slide,
@@ -77,8 +86,6 @@ export default function Canvas({
       angle = y <= 0 ? -arctan : 180 - arctan;
       angle -= corner;
     }
-
-    console.log(Math.tan(angle / (180 / Math.PI)));
 
     const update: SlideObject = {
       ...target,
@@ -204,14 +211,14 @@ export function ObjectComponent(
       "touchmove",
       (event) => {
         const touch = event.touches[0];
-        props.onMouse(type, touch.clientX, touch.clientY, contentRef);
+        props.onMouse(type, touch.clientX, touch.clientY, containerRef);
       },
       { signal: controller.signal },
     );
     window.addEventListener(
       "mousemove",
       (event) => {
-        props.onMouse(type, event.clientX, event.clientY, contentRef);
+        props.onMouse(type, event.clientX, event.clientY, containerRef);
       },
       { signal: controller.signal },
     );
@@ -223,26 +230,32 @@ export function ObjectComponent(
     case "text":
       if (!props.onClick) {
         body = (
-          <div className="h-full w-full overflow-auto rounded-[inherit] bg-surface1 p-2 focus:outline-none">
-            {content.body.split("\n").map((paragraph) => (
-              <p key={paragraph} className="mb-4">{paragraph}</p>
-            ))}
+          <div className="prose h-full w-full max-w-none overflow-auto rounded-[inherit] bg-surface1 p-2 focus:outline-none">
+            <Markdown>{content.body}</Markdown>
           </div>
         );
         break;
       }
 
       body = (
-        <textarea
-          ref={contentRef}
-          className="h-full w-full resize-none rounded-[inherit] bg-surface1 p-2 focus:outline-none"
-          onChange={(event) =>
+        <MDXEditor
+          className="force-hide-outline prose h-full w-full max-w-full max-w-none resize-none overflow-auto rounded-[inherit] bg-surface1 p-2 dark:prose-invert focus:outline-none"
+          contentEditableClassName="text-editor"
+          onChange={(value) =>
             props.onUpdate({
               ...props,
-              content: { ...content, body: event.target.value },
+              content: { ...content, body: value },
             })
           }
-          value={content.body}
+          ref={contentRef}
+          markdown={content.body}
+          plugins={[
+            headingsPlugin(),
+            listsPlugin(),
+            quotePlugin(),
+            thematicBreakPlugin(),
+            markdownShortcutPlugin(),
+          ]}
         />
       );
       break;
