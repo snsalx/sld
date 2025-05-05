@@ -1,4 +1,4 @@
-The docs are coming sometime in late April.
+~~The docs are coming sometime in late April.~~ I'll make the UI self-explanatory. That is planned for June.
 
 ## Self-Hosting
 
