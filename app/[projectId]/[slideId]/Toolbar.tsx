@@ -151,8 +151,6 @@ function ObjectProperties({
 
   const object = objects[0];
 
-  console.log(object.link);
-
   return (
     <div className="flex gap-3">
       <Select

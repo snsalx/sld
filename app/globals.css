@@ -6,3 +6,21 @@ html,
 body {
   overscroll-behavior: none;
 }
+
+.force-hide-outline * {
+  outline: none;
+}
+
+.prose * {
+  color: rgba(var(--ctp-text));
+  --tw-prose-bullets: rgba(var(--ctp-sky));
+  --tw-prose-quote-borders: rgba(var(--ctp-green));
+}
+
+.prose em {
+  color: rgba(var(--ctp-green));
+}
+
+.prose strong {
+  color: rgba(var(--ctp-blue));
+}

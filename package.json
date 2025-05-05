@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@mdxeditor/editor": "^3.32.1",
     "next": "15.2.4",
     "pocketbase": "^0.25.1",
     "react": "^19.0.0",
@@ -18,6 +19,7 @@
   "devDependencies": {
     "@catppuccin/tailwindcss": "^0.1.6",
     "@eslint/eslintrc": "^3",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
