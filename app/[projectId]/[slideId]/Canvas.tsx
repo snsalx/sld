@@ -15,6 +15,7 @@ import {
   quotePlugin,
   thematicBreakPlugin,
 } from "@mdxeditor/editor";
+import Markdown from "react-markdown";
 
 export default function Canvas({
   slide,
@@ -229,12 +230,8 @@ export function ObjectComponent(
     case "text":
       if (!props.onClick) {
         body = (
-          <div className="h-full w-full overflow-auto rounded-[inherit] bg-surface1 p-2 focus:outline-none">
-            {content.body.split("\n").map((paragraph) => (
-              <p key={paragraph} className="mb-4">
-                {paragraph}
-              </p>
-            ))}
+          <div className="prose h-full w-full max-w-none overflow-auto rounded-[inherit] bg-surface1 p-2 focus:outline-none">
+            <Markdown>{content.body}</Markdown>
           </div>
         );
         break;
