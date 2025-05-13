@@ -14,7 +14,7 @@ export default function AboutPage() {
   const backLink = params.get("backLink") || "";
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-svh flex-col">
       <main className="m-auto h-full w-[65ch] overflow-auto py-4">
         <h1 className="text-3xl text-blue underline">About</h1>
 

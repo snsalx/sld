@@ -53,7 +53,7 @@ export default function Home() {
   }
 
   return (
-    <div className="h-screen bg-base">
+    <div className="h-svh bg-base">
       <div className="m-auto flex h-full w-fit flex-col gap-4 overflow-auto rounded-lg p-2">
         <h1 className="mt-auto text-center text-3xl text-blue underline underline-offset-2">
           My Projects
