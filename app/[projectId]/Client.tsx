@@ -74,7 +74,7 @@ export default function ProjectPage({ id }: { id: string }) {
   }
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-svh flex-col">
       <ul className="m-auto flex h-full w-fit flex-col gap-4 overflow-auto rounded-lg p-2">
         <h1 className="mt-auto text-center text-3xl text-blue underline underline-offset-2">
           Slides

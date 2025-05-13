@@ -31,7 +31,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
+    <div className="flex h-svh w-screen items-center justify-center">
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <h1 className="text-center text-3xl text-blue underline">Log In</h1>
 
