@@ -22,6 +22,10 @@ body {
   margin-top: 0;
 }
 
+.mdxeditor-popup-container {
+  display: none;
+}
+
 .prose em {
   color: rgba(var(--ctp-green));
 }
