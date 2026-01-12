@@ -1,4 +1,5 @@
-~~The docs are coming sometime in late April.~~ I'll make the UI self-explanatory. That is planned for June.
+## Project status
+On hiatus, planning to either restore or replace with a new thing some time in 2026.
 
 ## Self-Hosting
 
